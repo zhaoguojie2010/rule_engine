@@ -7,6 +7,7 @@
 #include "antlr4-runtime.h"
 
 
+namespace rule_engine {
 
 
 class  cruleLexer : public antlr4::Lexer {
@@ -63,3 +64,4 @@ private:
   static Initializer _init;
 };
 
+}  // namespace rule_engine

@@ -5,3 +5,5 @@
 #include "cruleBaseListener.h"
 
 
+using namespace rule_engine;
+

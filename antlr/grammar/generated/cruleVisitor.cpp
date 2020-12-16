@@ -5,3 +5,5 @@
 #include "cruleVisitor.h"
 
 
+using namespace rule_engine;
+

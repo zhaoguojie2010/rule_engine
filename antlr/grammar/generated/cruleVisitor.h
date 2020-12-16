@@ -8,6 +8,7 @@
 #include "cruleParser.h"
 
 
+namespace rule_engine {
 
 /**
  * This class defines an abstract visitor for a parse tree
@@ -88,3 +89,4 @@ public:
 
 };
 
+}  // namespace rule_engine

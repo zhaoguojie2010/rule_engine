@@ -7,6 +7,7 @@
 #include "antlr4-runtime.h"
 
 
+namespace rule_engine {
 
 
 class  cruleParser : public antlr4::Parser {
@@ -676,3 +677,4 @@ private:
   static Initializer _init;
 };
 
+}  // namespace rule_engine

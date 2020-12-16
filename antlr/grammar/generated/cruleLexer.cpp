@@ -7,6 +7,7 @@
 
 using namespace antlr4;
 
+using namespace rule_engine;
 
 cruleLexer::cruleLexer(CharStream *input) : Lexer(input) {
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);

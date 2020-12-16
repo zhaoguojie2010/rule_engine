@@ -9,6 +9,7 @@
 
 
 using namespace antlrcpp;
+using namespace rule_engine;
 using namespace antlr4;
 
 cruleParser::cruleParser(TokenStream *input) : Parser(input) {

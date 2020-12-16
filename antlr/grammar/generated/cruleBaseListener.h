@@ -8,6 +8,8 @@
 #include "cruleListener.h"
 
 
+namespace rule_engine {
+
 /**
  * This class provides an empty implementation of cruleListener,
  * which can be extended to create a listener which only needs to handle a subset
@@ -123,3 +125,4 @@ public:
 
 };
 
+}  // namespace rule_engine

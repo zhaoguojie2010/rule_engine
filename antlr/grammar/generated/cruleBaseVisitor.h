@@ -8,6 +8,8 @@
 #include "cruleVisitor.h"
 
 
+namespace rule_engine {
+
 /**
  * This class provides an empty implementation of cruleVisitor, which can be
  * extended to create a visitor which only needs to handle a subset of the available methods.
@@ -150,3 +152,4 @@ public:
 
 };
 
+}  // namespace rule_engine

@@ -1,3 +1,4 @@
+// java -cp $CLASSPATH org.antlr.v4.Tool -Dlanguage=Cpp -package rule_engine -listener -visitor -o generated/ crule.g4
 grammar crule;
 
 // PARSER HERE

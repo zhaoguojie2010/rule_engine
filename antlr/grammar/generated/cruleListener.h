@@ -8,6 +8,8 @@
 #include "cruleParser.h"
 
 
+namespace rule_engine {
+
 /**
  * This interface defines an abstract listener for a parse tree produced by cruleParser.
  */
@@ -116,3 +118,4 @@ public:
 
 };
 
+}  // namespace rule_engine
