@@ -1,5 +1,5 @@
-// java -cp $CLASSPATH org.antlr.v4.Tool -Dlanguage=Cpp -package rule_engine -listener -visitor -o generated/ crule.g4
 grammar crule;
+// java -cp $CLASSPATH org.antlr.v4.Tool -Dlanguage=Cpp -package rule_engine -listener -visitor -o generated/ crule.g4
 
 // PARSER HERE
 crl
@@ -227,7 +227,7 @@ NOTEQUALS                   : '!=' ;
 BITAND                      : '&';
 BITOR                       : '|';
 
-SIMPLENAME                  : [a-zA-Z] [a-zA-Z0-9]*;
+SIMPLENAME                  : [a-zA-Z_] [a-zA-Z0-9_]*;
 
 DQUOTA_STRING               : '"' ( '\\'. | '""' | ~('"'| '\\') )* '"';
 SQUOTA_STRING               : '\'' ('\\'. | '\'\'' | ~('\'' | '\\'))* '\'';
