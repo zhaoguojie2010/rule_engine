@@ -1,7 +1,7 @@
-#include <string>
-
 #ifndef _RULE_ENGINE_KB_
 #define _RULE_ENGINE_KB_
+
+#include <string>
 
 namespace rule_engine {
 

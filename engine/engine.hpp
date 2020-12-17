@@ -1,10 +1,10 @@
+#ifndef _RULE_ENGINE_ENGINE_
+#define _RULE_ENGINE_ENGINE_
+
 #include <string>
 #include <memory>
 #include "data_context.hpp"
 #include "knowledge_base.hpp"
-
-#ifndef _RULE_ENGINE_ENGINE_
-#define _RULE_ENGINE_ENGINE_
 
 namespace rule_engine {
 

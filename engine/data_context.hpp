@@ -1,8 +1,8 @@
-#include <string>
-#include <unordered_map>
-
 #ifndef _RULE_ENGINE_DATA_CTX_
 #define _RULE_ENGINE_DATA_CTX_
+
+#include <string>
+#include <unordered_map>
 
 namespace rule_engine {
 
