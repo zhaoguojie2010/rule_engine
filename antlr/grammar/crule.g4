@@ -40,7 +40,7 @@ thenExpression
     ;
 
 assignment
-    : variable (ASSIGN | PLUS_ASIGN | MINUS_ASIGN | DIV_ASIGN | MUL_ASIGN) expression
+    : variable (ASSIGN | PLUS_ASIGN | MINUS_ASIGN | DIV_ASIGN | MUL_ASIGN | MOD_ASIGN) expression
     ;
 
 expression
@@ -51,6 +51,7 @@ expression
     | expression orLogicOperator expression
     | NEGATION? LR_BRACKET expression RR_BRACKET
     | expressionAtom
+    | variable IN LS_BRACKET constants RS_BRACKET
     ;
 
 mulDivOperators
@@ -81,6 +82,10 @@ expressionAtom
     | expressionAtom memberVariable
     | expressionAtom arrayMapSelector
     | NEGATION expressionAtom
+    ;
+
+constants
+    : constant ( ',' constant )*
     ;
 
 constant
@@ -218,6 +223,7 @@ PLUS_ASIGN                  : '+=' ;
 MINUS_ASIGN                 : '-=' ;
 DIV_ASIGN                   : '/=' ;
 MUL_ASIGN                   : '*=' ;
+MOD_ASIGN                   : '%=' ;
 GT                          : '>' ;
 LT                          : '<' ;
 GTE                         : '>=' ;

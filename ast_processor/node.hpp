@@ -1,5 +1,5 @@
-#ifndef _RULE_ENGINE_ACCEPTOR_
-#define _RULE_ENGINE_ACCEPTOR_
+#ifndef _RULE_ENGINE_NODE_
+#define _RULE_ENGINE_NODE_
 
 #include <string>
 #include <memory>

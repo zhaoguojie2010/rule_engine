@@ -54,6 +54,8 @@ public:
 
     virtual antlrcpp::Any visitExpressionAtom(cruleParser::ExpressionAtomContext *context) = 0;
 
+    virtual antlrcpp::Any visitConstants(cruleParser::ConstantsContext *context) = 0;
+
     virtual antlrcpp::Any visitConstant(cruleParser::ConstantContext *context) = 0;
 
     virtual antlrcpp::Any visitVariable(cruleParser::VariableContext *context) = 0;

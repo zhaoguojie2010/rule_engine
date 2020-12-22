@@ -85,6 +85,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitConstants(cruleParser::ConstantsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitConstant(cruleParser::ConstantContext *ctx) override {
     return visitChildren(ctx);
   }

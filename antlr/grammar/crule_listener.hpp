@@ -11,6 +11,7 @@
 #include "ast_processor/literal.hpp"
 #include "ast_processor/constant.hpp"
 #include "ast_processor/variable.hpp"
+#include "ast_processor/crl.hpp"
 #include "log/logger.hpp"
 
 namespace rule_engine {
@@ -168,9 +169,12 @@ public:
     void visitErrorNode(antlr4::tree::ErrorNode * node) override {
         error("Visiting error Node: " + node->getText());
     }
-
+    std::shared_ptr<Crl> GetCrl() {
+        return crl_;
+    }
 private:
     std::stack<std::shared_ptr<Node>> st_;
+    std::shared_ptr<Crl> crl_;
 };
 
 }

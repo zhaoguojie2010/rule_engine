@@ -67,6 +67,9 @@ public:
   virtual void enterExpressionAtom(cruleParser::ExpressionAtomContext *ctx) = 0;
   virtual void exitExpressionAtom(cruleParser::ExpressionAtomContext *ctx) = 0;
 
+  virtual void enterConstants(cruleParser::ConstantsContext *ctx) = 0;
+  virtual void exitConstants(cruleParser::ConstantsContext *ctx) = 0;
+
   virtual void enterConstant(cruleParser::ConstantContext *ctx) = 0;
   virtual void exitConstant(cruleParser::ConstantContext *ctx) = 0;
 

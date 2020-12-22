@@ -69,6 +69,9 @@ public:
   virtual void enterExpressionAtom(cruleParser::ExpressionAtomContext * /*ctx*/) override { }
   virtual void exitExpressionAtom(cruleParser::ExpressionAtomContext * /*ctx*/) override { }
 
+  virtual void enterConstants(cruleParser::ConstantsContext * /*ctx*/) override { }
+  virtual void exitConstants(cruleParser::ConstantsContext * /*ctx*/) override { }
+
   virtual void enterConstant(cruleParser::ConstantContext * /*ctx*/) override { }
   virtual void exitConstant(cruleParser::ConstantContext * /*ctx*/) override { }
 

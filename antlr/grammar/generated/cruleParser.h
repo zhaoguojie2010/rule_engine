@@ -18,11 +18,11 @@ public:
     RS_BRACKET = 14, RULE = 15, IF = 16, IN = 17, THEN = 18, AND = 19, OR = 20, 
     TRUE = 21, FALSE = 22, NIL_LITERAL = 23, NEGATION = 24, SALIENCE = 25, 
     EQUALS = 26, ASSIGN = 27, PLUS_ASIGN = 28, MINUS_ASIGN = 29, DIV_ASIGN = 30, 
-    MUL_ASIGN = 31, GT = 32, LT = 33, GTE = 34, LTE = 35, NOTEQUALS = 36, 
-    BITAND = 37, BITOR = 38, SIMPLENAME = 39, DQUOTA_STRING = 40, SQUOTA_STRING = 41, 
-    DECIMAL_FLOAT_LIT = 42, DECIMAL_EXPONENT = 43, HEX_FLOAT_LIT = 44, HEX_EXPONENT = 45, 
-    DEC_LIT = 46, HEX_LIT = 47, OCT_LIT = 48, SPACE = 49, COMMENT = 50, 
-    LINE_COMMENT = 51
+    MUL_ASIGN = 31, MOD_ASIGN = 32, GT = 33, LT = 34, GTE = 35, LTE = 36, 
+    NOTEQUALS = 37, BITAND = 38, BITOR = 39, SIMPLENAME = 40, DQUOTA_STRING = 41, 
+    SQUOTA_STRING = 42, DECIMAL_FLOAT_LIT = 43, DECIMAL_EXPONENT = 44, HEX_FLOAT_LIT = 45, 
+    HEX_EXPONENT = 46, DEC_LIT = 47, HEX_LIT = 48, OCT_LIT = 49, SPACE = 50, 
+    COMMENT = 51, LINE_COMMENT = 52
   };
 
   enum {
@@ -30,12 +30,12 @@ public:
     RuleRuleDescription = 4, RuleIfScope = 5, RuleThenScope = 6, RuleThenExpressionList = 7, 
     RuleThenExpression = 8, RuleAssignment = 9, RuleExpression = 10, RuleMulDivOperators = 11, 
     RuleAddMinusOperators = 12, RuleComparisonOperator = 13, RuleAndLogicOperator = 14, 
-    RuleOrLogicOperator = 15, RuleExpressionAtom = 16, RuleConstant = 17, 
-    RuleVariable = 18, RuleArrayMapSelector = 19, RuleMemberVariable = 20, 
-    RuleFunctionCall = 21, RuleMethodCall = 22, RuleArgumentList = 23, RuleFloatLiteral = 24, 
-    RuleDecimalFloatLiteral = 25, RuleHexadecimalFloatLiteral = 26, RuleIntegerLiteral = 27, 
-    RuleDecimalLiteral = 28, RuleHexadecimalLiteral = 29, RuleOctalLiteral = 30, 
-    RuleStringLiteral = 31, RuleBooleanLiteral = 32
+    RuleOrLogicOperator = 15, RuleExpressionAtom = 16, RuleConstants = 17, 
+    RuleConstant = 18, RuleVariable = 19, RuleArrayMapSelector = 20, RuleMemberVariable = 21, 
+    RuleFunctionCall = 22, RuleMethodCall = 23, RuleArgumentList = 24, RuleFloatLiteral = 25, 
+    RuleDecimalFloatLiteral = 26, RuleHexadecimalFloatLiteral = 27, RuleIntegerLiteral = 28, 
+    RuleDecimalLiteral = 29, RuleHexadecimalLiteral = 30, RuleOctalLiteral = 31, 
+    RuleStringLiteral = 32, RuleBooleanLiteral = 33
   };
 
   explicit cruleParser(antlr4::TokenStream *input);
@@ -65,6 +65,7 @@ public:
   class AndLogicOperatorContext;
   class OrLogicOperatorContext;
   class ExpressionAtomContext;
+  class ConstantsContext;
   class ConstantContext;
   class VariableContext;
   class ArrayMapSelectorContext;
@@ -245,6 +246,7 @@ public:
     antlr4::tree::TerminalNode *MINUS_ASIGN();
     antlr4::tree::TerminalNode *DIV_ASIGN();
     antlr4::tree::TerminalNode *MUL_ASIGN();
+    antlr4::tree::TerminalNode *MOD_ASIGN();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -265,6 +267,11 @@ public:
     antlr4::tree::TerminalNode *RR_BRACKET();
     antlr4::tree::TerminalNode *NEGATION();
     ExpressionAtomContext *expressionAtom();
+    VariableContext *variable();
+    antlr4::tree::TerminalNode *IN();
+    antlr4::tree::TerminalNode *LS_BRACKET();
+    ConstantsContext *constants();
+    antlr4::tree::TerminalNode *RS_BRACKET();
     MulDivOperatorsContext *mulDivOperators();
     AddMinusOperatorsContext *addMinusOperators();
     ComparisonOperatorContext *comparisonOperator();
@@ -387,6 +394,22 @@ public:
 
   ExpressionAtomContext* expressionAtom();
   ExpressionAtomContext* expressionAtom(int precedence);
+  class  ConstantsContext : public antlr4::ParserRuleContext {
+  public:
+    ConstantsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ConstantContext *> constant();
+    ConstantContext* constant(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConstantsContext* constants();
+
   class  ConstantContext : public antlr4::ParserRuleContext {
   public:
     ConstantContext(antlr4::ParserRuleContext *parent, size_t invokingState);

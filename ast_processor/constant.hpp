@@ -2,6 +2,7 @@
 #define _RULE_ENGINE_CONSTANT_
 
 #include <typeinfo>
+
 #include "node.hpp"
 #include "log/logger.hpp"
 #include "literal.hpp"
