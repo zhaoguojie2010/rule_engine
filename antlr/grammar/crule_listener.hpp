@@ -169,7 +169,7 @@ public:
     void visitErrorNode(antlr4::tree::ErrorNode * node) override {
         error("Visiting error Node: " + node->getText());
     }
-    std::shared_ptr<Crl> GetCrl() {
+    std::shared_ptr<Crl> get_crl() {
         return crl_;
     }
 private:
