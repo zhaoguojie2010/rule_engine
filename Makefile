@@ -29,7 +29,7 @@ CXXFLAGS=-ggdb \
 		 -fPIC \
 		 -Wextra \
 		 -m64 \
-		 -std=c++11 \
+		 -std=c++17 \
 		 -fno-strict-aliasing \
 		 -Wno-invalid-offsetof \
 		 -Wno-deprecated \
@@ -49,7 +49,13 @@ CXXFLAGS=-ggdb \
 		 -Wno-literal-suffix 
 
 INC_DIR=-I. \
-		-I/usr/local/include/antlr4-runtime
+		-I/usr/local/include/antlr4-runtime \
+		-I$(ROOT) \
+		-I$(ROOT)/antlr/grammar \
+		-I$(ROOT)/antlr/grammar/generated \
+		-I$(ROOT)/ast_processor \
+		-I$(ROOT)/engine \
+		-I$(ROOT)/log
 		#-I$(DEPS_DIR) \
 		-I$(DEPS_DIR)/atn \
 		-I$(DEPS_DIR)/dfa \
@@ -95,7 +101,7 @@ OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -
 
 
 $(BUILDPATHROOT)/$(MODULE) : $(OBJS) 
-	$(CXX) -o $@ $(INC_DIR) $(LDFLAGS) $(CXXFLAGS) \
+	$(CXX) -v -o $@ $(INC_DIR) $(LDFLAGS) $(CXXFLAGS) \
 		$(EXAMPLE_DIR)/single_struct.cpp $(OBJS) $(LIB_INC)
 
 PRE_BUILD:

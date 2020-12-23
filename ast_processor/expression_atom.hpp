@@ -5,13 +5,18 @@
 
 #include "node.hpp"
 #include "constant.hpp"
-#include "variable.hpp"
+//#include "variable.hpp"
 #include "function.hpp"
-#include "array_map_selector.hpp"
+//#include "array_map_selector.hpp"
 
 namespace rule_engine {
 
+class ArrayMapSelector;
+class Variable;
+
 class ExpressionAtom: public Node {
+public:
+    ExpressionAtom() {}
 private:
     std::shared_ptr<Constant> expression_;
     std::shared_ptr<Variable> variable_;

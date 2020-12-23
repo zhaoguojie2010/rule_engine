@@ -9,6 +9,8 @@
 namespace rule_engine {
 
 class ThenScope: public Node {
+public:
+    ThenScope() {}
 private:
     std::shared_ptr<ThenExpressions> expression_;
 };

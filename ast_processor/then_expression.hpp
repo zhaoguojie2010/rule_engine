@@ -10,8 +10,10 @@
 namespace rule_engine {
 
 class ThenExpression: public Node {
+public:
+    ThenExpression() {}
 private:
-    std::shared_ptr<Assignment> expression_;
+    std::shared_ptr<Assignment> assignment_;
     std::shared_ptr<ExpressionAtom> expression_;
 };
 

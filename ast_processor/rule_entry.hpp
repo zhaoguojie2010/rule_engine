@@ -9,7 +9,19 @@
 
 namespace rule_engine {
 
+class IDataContext {
+    virtual void add(const std::string& name, void* obj) = 0;
+    virtual void remove(const std::string& name) = 0;
+    virtual void* get(const std::string& name) = 0;
+};
+
 class RuleEntry: public Node {
+public:
+    RuleEntry() {}
+    bool evaluate(IDataContext* dctx) {
+        return true;
+    }
+    void execute(IDataContext* dctx) {}
 private:
     std::string name_;
     std::string description_;

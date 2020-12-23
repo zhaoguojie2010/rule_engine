@@ -9,6 +9,8 @@
 namespace rule_engine {
 
 class Function: public Node {
+public:
+    Function() {}
 private:
     std::string name_;
     std::shared_ptr<Arguments> args_;

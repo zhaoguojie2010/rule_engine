@@ -11,7 +11,7 @@ namespace rule_engine {
 
 class Constants: public Node {
 public:
-
+    Constants() {}
 private:
     std::vector<Constant> constants_;
 };

@@ -4,9 +4,9 @@
 #include <stack>
 #include <memory>
 
-#include "cruleBaseListener.h"
 #include "ANTLRInputStream.h"
 #include "CommonTokenStream.h"
+#include "generated/cruleBaseListener.h"
 #include "ast_processor/node.hpp"
 #include "ast_processor/literal.hpp"
 #include "ast_processor/constant.hpp"

@@ -9,6 +9,8 @@
 namespace rule_engine {
 
 class IfScope: public Node {
+public:
+    IfScope() {}
 private:
     std::shared_ptr<Expression> expression_;
 };

@@ -6,7 +6,9 @@
 
 namespace rule_engine {
 
-class Variable {
+class ArrayMapSelector{
+public:
+    ArrayMapSelector() {}
 private:
     std::shared_ptr<Expression> expression_;
 };

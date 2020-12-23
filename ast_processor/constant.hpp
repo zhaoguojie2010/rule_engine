@@ -13,7 +13,8 @@ enum VAR_TYPE {
     INT,
     STRING,
     FLOAT,
-    BOOLEAN
+    BOOLEAN,
+    UNDEFINED
 };
 
 class Var {
@@ -22,11 +23,14 @@ public:
         return T_;
     }
 
-    Var(const std::string& s): string_(s), T_(STRING) {}
-    Var(const int& i): int_(i), T_(INT) {}
-    Var(const float& f): float_(f), T_(FLOAT) {}
-    Var(const bool& b): bool_(b), T_(BOOLEAN) {}
+    Var(): T_(UNDEFINED) {}
 
+    Var(const std::string& s): T_(STRING), string_(s)  {}
+    Var(const int& i): T_(INT), int_(i)  {}
+    Var(const float& f): T_(FLOAT), float_(f) {}
+    Var(const bool& b): T_(BOOLEAN), bool_(b) {}
+
+    virtual ~Var() {}
     void set_string(const std::string& s) {
         T_ = STRING;
         string_ = s;
@@ -60,6 +64,8 @@ public:
                 return float_ == other.get_float();
             case BOOLEAN:
                 return bool_ == other.get_boolean();
+            case UNDEFINED:
+                return false;
         }
         return false;
     }
@@ -75,6 +81,7 @@ private:
 
 class Constant: public Node {
 public:
+    Constant():Node(), v_() {}
     void accept_string_literal(std::shared_ptr<Node> child) {
         v_.set_string(dynamic_cast<StringLiteral*>(child.get())->string_);
     }
@@ -87,6 +94,7 @@ public:
     void accept_bool_literal(std::shared_ptr<Node> child) {
         v_.set_bool(dynamic_cast<BooleanLiteral*>(child.get())->bool_);
     }
+    virtual ~Constant() {}
 private:
     Var v_;
     // std::shared_ptr<StringLiteral> string_;

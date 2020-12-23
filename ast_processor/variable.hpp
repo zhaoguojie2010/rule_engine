@@ -8,6 +8,8 @@
 namespace rule_engine {
 
 class Variable {
+public:
+    Variable() {}
 private:
     std::shared_ptr<Variable> variable_;
     std::shared_ptr<ArrayMapSelector> selector_;

@@ -19,8 +19,10 @@ enum ASSGN_TYPE {
 };
 
 class Assignment: public Node {
+public:
+    Assignment() {}
 private:
-    std::shared_ptr<Variable> expression_;
+    std::shared_ptr<Variable> variable_;
     std::shared_ptr<Expression> expression_;
 };
 

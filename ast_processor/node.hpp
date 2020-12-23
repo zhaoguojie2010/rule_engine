@@ -9,6 +9,7 @@ namespace rule_engine {
 
 class Node {
 public:
+    Node() {}
     std::string get_crl_text() {
         return crl_text_;
     }

@@ -1,5 +1,5 @@
-#ifndef _RULE_ENGINE_LISTENER_
-#define _RULE_ENGINE_LISTENER_
+#ifndef _RULE_ENGINE_LOG_
+#define _RULE_ENGINE_LOG_
 
 #include <stack>
 #include <memory>

@@ -4,10 +4,16 @@
 #include <string>
 
 #include "node.hpp"
+#include "rule_entry.hpp"
 
 namespace rule_engine {
 
 class Crl: public Node {
+public:
+    Crl() {}
+    std::unordered_map<std::string, std::shared_ptr<RuleEntry>>& get_rule_entries() {
+        return rule_enties_;
+    }
 private:
     std::unordered_map<std::string, std::shared_ptr<RuleEntry>> rule_enties_;
 };

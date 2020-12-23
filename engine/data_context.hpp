@@ -3,11 +3,12 @@
 
 #include <string>
 #include <unordered_map>
+#include "ast_processor/rule_entry.hpp"
 
 namespace rule_engine {
 
 // DataContext holds the data to be manipulated by crule, usually structs.
-class DataContext {
+class DataContext: public IDataContext {
 public:
     DataContext() {}
 

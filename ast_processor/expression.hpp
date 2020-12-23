@@ -27,6 +27,8 @@ enum OP_TYPE {
 };
 
 class Expression: public Node {
+public:
+    Expression() {}
 private:
     std::shared_ptr<Expression> left_;
     std::shared_ptr<Expression> right_;
