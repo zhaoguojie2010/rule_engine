@@ -34,7 +34,6 @@ public:
         auto crl = listener.get_crl();
         kb_.set_crl(crl);
     }
-
     void execute(DataContext* dctx) {
         std::shared_ptr<Crl> crl;
         {

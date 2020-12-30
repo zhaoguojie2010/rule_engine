@@ -31,7 +31,8 @@ int main() {
     rule_engine::Engine e;
     e.load_rules(rule);
     rule_engine::DataContext dctx;
-    dctx.add("Assassin", &killer);
+    //dctx.add("Assassin", std::variant<Killer*>(&killer));
+    dctx.add("Assassin", killer);
     e.execute(&dctx);
 
     return 0;

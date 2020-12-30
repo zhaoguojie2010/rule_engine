@@ -5,22 +5,22 @@
 
 namespace rule_engine {
 
-class IStringLiteral {
+class IStringLiteralAcceptor {
 public:
     virtual void accept_string_literal(std::shared_ptr<Node>) = 0;
 };
 
-class IIntegerLiteral {
+class IIntegerLiteralAcceptor {
 public:
     virtual void accept_int_literal(std::shared_ptr<Node>) = 0;
 };
 
-class IFloatLiteral {
+class IFloatLiteralAcceptor {
 public:
     virtual void accept_float_literal(std::shared_ptr<Node>) = 0;
 };
 
-class IBooleanLiteral {
+class IBooleanLiteralAcceptor {
 public:
     virtual void accept_bool_literal(std::shared_ptr<Node>) = 0;
 };

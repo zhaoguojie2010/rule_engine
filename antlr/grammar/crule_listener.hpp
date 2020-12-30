@@ -104,9 +104,9 @@ public:
         auto l = std::make_shared<FloatLiteral>();
         l->float_ = std::stof(ctx->getText());
         std::shared_ptr<Node> acceptor = st_.top();
-        auto p = dynamic_cast<IFloatLiteral*>(acceptor.get());
+        auto p = dynamic_cast<IFloatLiteralAcceptor*>(acceptor.get());
         if(p==nullptr) {
-            error("bad cast to IFloatLiteral: " + ctx->getText());
+            error("bad cast to IFloatLiteralAcceptor: " + ctx->getText());
         }
         p->accept_float_literal(l);
     }
@@ -122,9 +122,9 @@ public:
         auto l = std::make_shared<IntegerLiteral>();
         l->int_ = std::stoi(ctx->getText());
         std::shared_ptr<Node> acceptor = st_.top();
-        auto p = dynamic_cast<IIntegerLiteral*>(acceptor.get());
+        auto p = dynamic_cast<IIntegerLiteralAcceptor*>(acceptor.get());
         if(p==nullptr) {
-            error("bad cast to IIntegerLiteral: " + ctx->getText());
+            error("bad cast to IIntegerLiteralAcceptor: " + ctx->getText());
         }
         p->accept_int_literal(l);
     }
@@ -143,9 +143,9 @@ public:
         auto l = std::make_shared<StringLiteral>();
         l->string_ = ctx->getText();
         std::shared_ptr<Node> acceptor = st_.top();
-        auto p = dynamic_cast<IStringLiteral*>(acceptor.get());
+        auto p = dynamic_cast<IStringLiteralAcceptor*>(acceptor.get());
         if(p==nullptr) {
-            error("bad cast to IStringLiteral: " + ctx->getText());
+            error("bad cast to IStringLiteralAcceptor: " + ctx->getText());
         }
         p->accept_string_literal(l);
     }
@@ -155,9 +155,9 @@ public:
         auto l = std::make_shared<BooleanLiteral>();
         l->bool_ = ctx->getText()=="true";
         std::shared_ptr<Node> acceptor = st_.top();
-        auto p = dynamic_cast<IBooleanLiteral*>(acceptor.get());
+        auto p = dynamic_cast<IBooleanLiteralAcceptor*>(acceptor.get());
         if(p==nullptr) {
-            error("bad cast to IBooleanLiteral: " + ctx->getText());
+            error("bad cast to IBooleanLiteralAcceptor: " + ctx->getText());
         }
         p->accept_bool_literal(l);
     }

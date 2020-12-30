@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include <rttr/registration>
+#include <rttr/type>
 
 namespace rule_engine {
 
@@ -30,6 +32,11 @@ private:
     std::string ast_id_;
 };
 
+class IDataContext {
+    virtual void add(const std::string& name, rttr::instance obj) = 0;
+    virtual void remove(const std::string& name) = 0;
+    virtual rttr::instance get(const std::string& name) = 0;
+};
 
 }
 #endif

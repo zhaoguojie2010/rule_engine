@@ -11,6 +11,10 @@ namespace rule_engine {
 class IfScope: public Node {
 public:
     IfScope() {}
+    bool evaluate(IDataContext* dctx) {
+        return true;
+        //auto result = expression_->evaluate(dctx);
+    }
 private:
     std::shared_ptr<Expression> expression_;
 };

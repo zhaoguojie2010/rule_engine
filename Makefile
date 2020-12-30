@@ -50,6 +50,7 @@ CXXFLAGS=-ggdb \
 
 INC_DIR=-I. \
 		-I/usr/local/include/antlr4-runtime \
+		-I/user/local/include \
 		-I$(ROOT) \
 		-I$(ROOT)/antlr/grammar \
 		-I$(ROOT)/antlr/grammar/generated \
@@ -63,7 +64,7 @@ INC_DIR=-I. \
 		-I$(DEPS_DIR)/support \
 
 
-LIB_INC=/usr/local/lib/libantlr4-runtime.a
+LIB_INC= -lantlr4-runtime -lrttr_core
 
 
 ###################SYSTEM CHECK####################

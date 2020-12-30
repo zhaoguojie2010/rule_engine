@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+
 #include "ast_processor/rule_entry.hpp"
 
 namespace rule_engine {
@@ -12,21 +13,18 @@ class DataContext: public IDataContext {
 public:
     DataContext() {}
 
-    // add might add multiple type of object
-    void add(const std::string& name, void* obj) {
-        // TODO:
+    void add(const std::string& name, rttr::instance obj) {
+        map_.insert(std::make_pair(name, obj));
     }
     void remove(const std::string& name) {
-        // TODO:
+        map_.erase(name);
     }
 
-    // TODO: should be able to deduct the returned type
-    void* get(const std::string& name) {
-        // TODO:
-        return 0;
+    rttr::instance get(const std::string& name) {
+        return map_[name];
     }
 private:
-    std::unordered_map<std::string, void*> map_;
+    std::unordered_map<std::string, rttr::instance> map_;
 };
 
 }

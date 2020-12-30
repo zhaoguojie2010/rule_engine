@@ -95,6 +95,10 @@ public:
         v_.set_bool(dynamic_cast<BooleanLiteral*>(child.get())->bool_);
     }
     virtual ~Constant() {}
+
+    Var& evaluate() {
+        return v_;
+    }
 private:
     Var v_;
     // std::shared_ptr<StringLiteral> string_;
