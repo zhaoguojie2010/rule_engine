@@ -12,6 +12,19 @@ struct Killer {
 };
 
 
+RTTR_REGISTRATION {
+    rttr::registration::class_<Killer>("Killer")
+        .property("decided_to_kill", &Killer::decided_to_kill)
+        .property("target", &Killer::target)
+        .method("kill", rttr::select_non_const(&Killer::kill))
+    ;
+
+    rttr::registration::class_<Target>("Killer")
+        .property("age", &Target::age)
+        .property("gennder", &Target::gender)
+    ;
+}
+
 
 int main() {
     const char* rule = R"(
@@ -32,7 +45,7 @@ int main() {
     e.load_rules(rule);
     rule_engine::DataContext dctx;
     //dctx.add("Assassin", std::variant<Killer*>(&killer));
-    dctx.add("Assassin", killer);
+    dctx.add("Killer", killer);
     e.execute(&dctx);
 
     return 0;

@@ -12,7 +12,11 @@ class ThenScope: public Node {
 public:
     ThenScope() {}
 private:
-    std::shared_ptr<ThenExpressions> expression_;
+    std::shared_ptr<ThenExpressions> then_expression_;
+};
+
+struct IThenScopeAcceptor {
+    virtual void accept_then_scope(std::shared_ptr<ThenScope>) = 0;
 };
 
 }

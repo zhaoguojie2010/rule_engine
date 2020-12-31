@@ -33,8 +33,21 @@ public:
     void enterRuleDescription(cruleParser::RuleDescriptionContext * ctx) override { }
     void exitRuleDescription(cruleParser::RuleDescriptionContext * ctx) override { }
 
-    void enterIfScope(cruleParser::IfScopeContext * ctx) override { }
-    void exitIfScope(cruleParser::IfScopeContext * ctx) override { }
+    void enterIfScope(cruleParser::IfScopeContext * ctx) override { 
+        auto if_scope = std::make_shared<IfScope>();
+        if_scope->set_crl_text(ctx->getText());
+        st_.push(if_scope);
+    }
+    void exitIfScope(cruleParser::IfScopeContext * ctx) override { 
+        std::shared_ptr<Node> if_scope = st_.top();
+        assert_type<IfScope>(if_scope, "bad cast to IfScope: " + ctx->getText());
+        st_.pop();
+
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type<IIfScopeAcceptor>(acceptor, "bad cast to IIfScopeAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IIfScopeAcceptor>(acceptor);
+        acc->accept_if_scope(std::dynamic_pointer_cast<IfScope>(if_scope));
+    }
 
     void enterThenScope(cruleParser::ThenScopeContext * ctx) override { }
     void exitThenScope(cruleParser::ThenScopeContext * ctx) override { }
@@ -48,22 +61,64 @@ public:
     void enterAssignment(cruleParser::AssignmentContext * ctx) override { }
     void exitAssignment(cruleParser::AssignmentContext * ctx) override { }
 
-    void enterExpression(cruleParser::ExpressionContext * ctx) override { }
-    void exitExpression(cruleParser::ExpressionContext * ctx) override { }
+    void enterExpression(cruleParser::ExpressionContext * ctx) override { 
+        auto expr = std::make_shared<Expression>();
+        expr->set_crl_text(ctx->getText());
+        st_.push(expr);
+    }
+    void exitExpression(cruleParser::ExpressionContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        st_.pop();
+        if(ctx->LR_BRACKET() && ctx->RR_BRACKET() && ctx->NEGATION()) {
+            expr->set_negation();
+        }
+        
+        auto acceptor = st_.top();
+        assert_type<IExpressionAcceptor>(acceptor, "bad cast to IExpressionAcceptor");
+        std::dynamic_pointer_cast<IExpressionAcceptor>(acceptor)->accept_expression(expr);
+    }
 
-    void enterMulDivOperators(cruleParser::MulDivOperatorsContext * ctx) override { }
+    void enterMulDivOperators(cruleParser::MulDivOperatorsContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        auto c = ctx->getText();
+        if(c=="*") expr->set_op_type(MUL);
+        else if(c=="/") expr->set_op_type(DIV);
+        else if(c=="%") expr->set_op_type(MOD);
+    }
     void exitMulDivOperators(cruleParser::MulDivOperatorsContext * ctx) override { }
 
-    void enterAddMinusOperators(cruleParser::AddMinusOperatorsContext * ctx) override { }
+    void enterAddMinusOperators(cruleParser::AddMinusOperatorsContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        auto c = ctx->getText();
+        if(c=="+") expr->set_op_type(ADD);
+        else if(c=="-") expr->set_op_type(SUB);
+        else if(c=="|") expr->set_op_type(BITOR);
+        else if(c=="&") expr->set_op_type(BITAND);
+    }
     void exitAddMinusOperators(cruleParser::AddMinusOperatorsContext * ctx) override { }
 
-    void enterComparisonOperator(cruleParser::ComparisonOperatorContext * ctx) override { }
+    void enterComparisonOperator(cruleParser::ComparisonOperatorContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        auto c = ctx->getText();
+        if(c=="<") expr->set_op_type(LT);
+        else if(c==">") expr->set_op_type(GT);
+        else if(c=="<=") expr->set_op_type(LET);
+        else if(c==">=") expr->set_op_type(GET);
+        else if(c=="==") expr->set_op_type(EQ);
+        else if(c=="!=") expr->set_op_type(NEQ);
+    }
     void exitComparisonOperator(cruleParser::ComparisonOperatorContext * ctx) override { }
 
-    void enterAndLogicOperator(cruleParser::AndLogicOperatorContext * ctx) override { }
+    void enterAndLogicOperator(cruleParser::AndLogicOperatorContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        expr->set_op_type(AND);
+    }
     void exitAndLogicOperator(cruleParser::AndLogicOperatorContext * ctx) override { }
 
-    void enterOrLogicOperator(cruleParser::OrLogicOperatorContext * ctx) override { }
+    void enterOrLogicOperator(cruleParser::OrLogicOperatorContext * ctx) override { 
+        auto expr = std::dynamic_pointer_cast<Expression>(st_.top());
+        expr->set_op_type(OR);
+    }
     void exitOrLogicOperator(cruleParser::OrLogicOperatorContext * ctx) override { }
 
     void enterExpressionAtom(cruleParser::ExpressionAtomContext * ctx) override { }

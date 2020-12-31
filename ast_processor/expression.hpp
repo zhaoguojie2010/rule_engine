@@ -26,9 +26,26 @@ enum OP_TYPE {
     NEQ
 };
 
-class Expression: public Node {
+struct IExpressionAcceptor {
+    virtual void accept_expression(std::shared_ptr<Expression>) = 0;
+};
+
+class Expression: public Node, public IExpressionAcceptor {
 public:
     Expression() {}
+    void set_negation() {
+        negation_ = true;
+    }
+    void accept_expression(std::shared_ptr<Expression> expr) {
+        if(!left_) {
+            left_ = expr;
+        } else {
+            right_ = expr;
+        }
+    }
+    void set_op_type(OP_TYPE t) {
+        op_type_ = t;
+    }
 private:
     std::shared_ptr<Expression> left_;
     std::shared_ptr<Expression> right_;
