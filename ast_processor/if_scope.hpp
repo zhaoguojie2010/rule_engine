@@ -12,8 +12,18 @@ class IfScope: public Node, public IExpressionAcceptor {
 public:
     IfScope() {}
     bool evaluate(IDataContext* dctx) {
-        return true;
-        //auto result = expression_->evaluate(dctx);
+        auto result = expression_->evaluate(dctx);
+        if(!result.is_valid()) {
+            error("unresolved IfScope");
+        }
+        if(result.get_type() != rttr::type::get<bool>()) {
+            error("invalid IfScope: not a boolean expression");
+        }
+        bool *ptr = result.try_convert<bool>();
+        if(!ptr) {
+            error("invalid IfScope: failed to convert to bool");
+        }
+        return *ptr;
     }
     void accept_expression(std::shared_ptr<Expression> expr) {
         expression_ = expr;

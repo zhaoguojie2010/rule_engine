@@ -38,5 +38,45 @@ class IDataContext {
     virtual rttr::instance get(const std::string& name) = 0;
 };
 
+class Expression;
+class ExpressionAtom;
+class Variable;
+class Constant;
+struct IExpressionAcceptor {
+    virtual void accept_expression(std::shared_ptr<Expression>) = 0;
+};
+
+struct IExpressionAtomAcceptor {
+    virtual void accept_expression_atom(std::shared_ptr<ExpressionAtom>) = 0;
+};
+
+struct IVariableAcceptor {
+    virtual void accept_variable(std::shared_ptr<Variable>) = 0;
+};
+
+struct IConstantAcceptor {
+    virtual void accept_constant(std::shared_ptr<Constant>) = 0;
+};
+
+class IStringLiteralAcceptor {
+public:
+    virtual void accept_string_literal(std::shared_ptr<Node>) = 0;
+};
+
+class IIntegerLiteralAcceptor {
+public:
+    virtual void accept_int_literal(std::shared_ptr<Node>) = 0;
+};
+
+class IFloatLiteralAcceptor {
+public:
+    virtual void accept_float_literal(std::shared_ptr<Node>) = 0;
+};
+
+class IBooleanLiteralAcceptor {
+public:
+    virtual void accept_bool_literal(std::shared_ptr<Node>) = 0;
+};
+
 }
 #endif

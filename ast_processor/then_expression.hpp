@@ -9,12 +9,15 @@
 
 namespace rule_engine {
 
-class ThenExpression: public Node {
+class ThenExpression: public Node, public IExpressionAtomAcceptor {
 public:
     ThenExpression() {}
+    void accept_expression_atom(std::shared_ptr<ExpressionAtom> atom) {
+        atom_ = atom;
+    }
 private:
     std::shared_ptr<Assignment> assignment_;
-    std::shared_ptr<ExpressionAtom> expression_;
+    std::shared_ptr<ExpressionAtom> atom_;
 };
 
 }

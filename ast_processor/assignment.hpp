@@ -18,11 +18,14 @@ enum ASSGN_TYPE {
     MOD_ASSIGN
 };
 
-class Assignment: public Node, public IExpressionAcceptor {
+class Assignment: public Node, public IExpressionAcceptor, public IVariableAcceptor {
 public:
     Assignment() {}
     void accept_expression(std::shared_ptr<Expression> expr) {
         expression_ = expr;
+    }
+    void accept_variable(std::shared_ptr<Variable> var) {
+        variable_ = var;
     }
 private:
     std::shared_ptr<Variable> variable_;

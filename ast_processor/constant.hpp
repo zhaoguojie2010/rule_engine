@@ -48,22 +48,22 @@ public:
         bool_ = b;
     }
 
-    std::string get_string() const {return string_;};
-    int get_int() const {return int_;};
-    float get_float() const {return float_;}
-    bool get_boolean() const {return bool_;}
+    std::string to_string() const {return string_;};
+    int to_int() const {return int_;};
+    float to_float() const {return float_;}
+    bool to_boolean() const {return bool_;}
 
     bool operator==(const Var& other) {
         if(T_ != other.get_type()) return false; 
         switch(T_) {
             case INT:
-                return int_ == other.get_int();
+                return int_ == other.to_int();
             case STRING:
-                return string_ == other.get_string();
+                return string_ == other.to_string();
             case FLOAT:
-                return float_ == other.get_float();
+                return float_ == other.to_float();
             case BOOLEAN:
-                return bool_ == other.get_boolean();
+                return bool_ == other.to_boolean();
             case UNDEFINED:
                 return false;
         }

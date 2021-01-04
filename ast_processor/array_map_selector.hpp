@@ -6,9 +6,12 @@
 
 namespace rule_engine {
 
-class ArrayMapSelector{
+class ArrayMapSelector: public Node, public IExpressionAcceptor {
 public:
     ArrayMapSelector() {}
+    void accept_expression(std::shared_ptr<Expression> expr) {
+        expression_ = expr;
+    }
 private:
     std::shared_ptr<Expression> expression_;
 };

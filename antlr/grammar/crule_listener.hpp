@@ -40,11 +40,10 @@ public:
     }
     void exitIfScope(cruleParser::IfScopeContext * ctx) override { 
         std::shared_ptr<Node> if_scope = st_.top();
-        assert_type<IfScope>(if_scope, "bad cast to IfScope: " + ctx->getText());
         st_.pop();
 
         std::shared_ptr<Node> acceptor = st_.top();
-        assert_type<IIfScopeAcceptor>(acceptor, "bad cast to IIfScopeAcceptor: " + ctx->getText());
+        assert_type_semantic<IIfScopeAcceptor>(acceptor, "bad cast to IIfScopeAcceptor: " + ctx->getText());
         auto acc = std::dynamic_pointer_cast<IIfScopeAcceptor>(acceptor);
         acc->accept_if_scope(std::dynamic_pointer_cast<IfScope>(if_scope));
     }
@@ -74,7 +73,7 @@ public:
         }
         
         auto acceptor = st_.top();
-        assert_type<IExpressionAcceptor>(acceptor, "bad cast to IExpressionAcceptor");
+        assert_type_semantic<IExpressionAcceptor>(acceptor, "bad cast to IExpressionAcceptor");
         std::dynamic_pointer_cast<IExpressionAcceptor>(acceptor)->accept_expression(expr);
     }
 
@@ -121,8 +120,19 @@ public:
     }
     void exitOrLogicOperator(cruleParser::OrLogicOperatorContext * ctx) override { }
 
-    void enterExpressionAtom(cruleParser::ExpressionAtomContext * ctx) override { }
-    void exitExpressionAtom(cruleParser::ExpressionAtomContext * ctx) override { }
+    void enterExpressionAtom(cruleParser::ExpressionAtomContext * ctx) override { 
+        auto expr_atom = std::make_shared<ExpressionAtom>();
+        expr_atom->set_crl_text(ctx->getText());
+        st_.push(expr_atom);
+    }
+    void exitExpressionAtom(cruleParser::ExpressionAtomContext * ctx) override { 
+        auto atom = std::dynamic_pointer_cast<ExpressionAtom>(st_.top());
+        st_.pop();
+
+        auto acceptor = st_.top();
+        assert_type_semantic<IExpressionAtomAcceptor>(acceptor, "bad cast to IExpressionAtomAcceptor");
+        std::dynamic_pointer_cast<IExpressionAtomAcceptor>(acceptor)->accept_expression_atom(atom);
+    }
 
     void enterConstant(cruleParser::ConstantContext * ctx) override {
         auto c = std::make_shared<Constant>();
@@ -136,8 +146,22 @@ public:
         acceptor->accept(c);
     }
 
-    void enterVariable(cruleParser::VariableContext * ctx) override { }
-    void exitVariable(cruleParser::VariableContext * ctx) override { }
+    void enterVariable(cruleParser::VariableContext * ctx) override { 
+        auto var = std::make_shared<Variable>();
+        var->set_crl_text(ctx->getText());
+        if(ctx->SIMPLENAME() && !ctx->SIMPLENAME()->getText().empty()) {
+            var->set_name(ctx->SIMPLENAME()->getText());
+        }
+        st_.push(var);
+    }
+    void exitVariable(cruleParser::VariableContext * ctx) override { 
+        auto var = std::dynamic_pointer_cast<Variable>(st_.top());
+        st_.pop();
+
+        auto acceptor = st_.top();
+        assert_type_semantic<IVariableAcceptor>(acceptor, "bad cast to IVariableAcceptor");
+        std::dynamic_pointer_cast<IVariableAcceptor>(acceptor)->accept_variable(var);
+    }
 
     void enterArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { }
     void exitArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { }

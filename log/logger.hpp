@@ -21,6 +21,13 @@ void error(const std::string& s) {
 }
 
 template<typename T>
+void assert_type_semantic(std::shared_ptr<Node> ptr, const std::string& s) {
+    if(dynamic_cast<T*>(ptr.get()) == nullptr) {
+        error(s);
+    }
+}
+
+template<typename T>
 void assert_type(std::shared_ptr<Node> ptr, const std::string& s) {
     if(dynamic_cast<T*>(ptr.get()) == nullptr) {
         error(s);
