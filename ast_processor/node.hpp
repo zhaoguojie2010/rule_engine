@@ -44,6 +44,9 @@ class ExpressionAtom;
 class Variable;
 class Constant;
 class RuleEntry;
+class ThenScope;
+class ThenExpressions;
+class ThenExpression;
 
 struct IRuleEntryAcceptor {
     virtual void accept_rule_entry(std::shared_ptr<RuleEntry>) = 0;
@@ -62,6 +65,18 @@ struct IVariableAcceptor {
 
 struct IConstantAcceptor {
     virtual void accept_constant(std::shared_ptr<Constant>) = 0;
+};
+
+struct IThenScopeAcceptor {
+    virtual void accept_then_scope(std::shared_ptr<ThenScope>) = 0;
+};
+
+struct IThenExpressionsAcceptor {
+    virtual void accept_then_expressions(std::shared_ptr<ThenExpressions>) = 0;
+};
+
+struct IThenExpressionAcceptor {
+    virtual void accept_then_expression(std::shared_ptr<ThenExpression>) = 0;
 };
 
 class IStringLiteralAcceptor {

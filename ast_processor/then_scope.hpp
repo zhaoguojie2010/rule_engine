@@ -8,15 +8,14 @@
 
 namespace rule_engine {
 
-class ThenScope: public Node {
+class ThenScope: public Node, public IThenExpressionsAcceptor {
 public:
     ThenScope() {}
+    virtual void accept_then_expressions(std::shared_ptr<ThenExpressions> exprs) {
+        then_expressions_ = exprs;
+    }
 private:
-    std::shared_ptr<ThenExpressions> then_expression_;
-};
-
-struct IThenScopeAcceptor {
-    virtual void accept_then_scope(std::shared_ptr<ThenScope>) = 0;
+    std::shared_ptr<ThenExpressions> then_expressions_;
 };
 
 }

@@ -68,14 +68,50 @@ public:
         acc->accept_if_scope(std::dynamic_pointer_cast<IfScope>(if_scope));
     }
 
-    void enterThenScope(cruleParser::ThenScopeContext * ctx) override { }
-    void exitThenScope(cruleParser::ThenScopeContext * ctx) override { }
+    void enterThenScope(cruleParser::ThenScopeContext * ctx) override { 
+        auto then_scope = std::make_shared<ThenScope>();
+        then_scope->set_crl_text(ctx->getText());
+        st_.push(then_scope);
+    }
+    void exitThenScope(cruleParser::ThenScopeContext * ctx) override { 
+        std::shared_ptr<Node> then_scope = st_.top();
+        st_.pop();
 
-    void enterThenExpressionList(cruleParser::ThenExpressionListContext * ctx) override { }
-    void exitThenExpressionList(cruleParser::ThenExpressionListContext * ctx) override { }
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type_semantic<IThenScopeAcceptor>(acceptor, "bad cast to IThenScopeAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IThenScopeAcceptor>(acceptor);
+        acc->accept_then_scope(std::dynamic_pointer_cast<ThenScope>(then_scope));
+    }
 
-    void enterThenExpression(cruleParser::ThenExpressionContext * ctx) override { }
-    void exitThenExpression(cruleParser::ThenExpressionContext * ctx) override { }
+    void enterThenExpressionList(cruleParser::ThenExpressionListContext * ctx) override { 
+        auto expressions = std::make_shared<ThenExpressions>();
+        expressions->set_crl_text(ctx->getText());
+        st_.push(expressions);
+    }
+    void exitThenExpressionList(cruleParser::ThenExpressionListContext * ctx) override { 
+        std::shared_ptr<Node> expressions = st_.top();
+        st_.pop();
+
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type_semantic<IThenExpressionsAcceptor>(acceptor, "bad cast to IThenExpressionsAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IThenExpressionsAcceptor>(acceptor);
+        acc->accept_then_expressions(std::dynamic_pointer_cast<ThenExpressions>(expressions));
+    }
+
+    void enterThenExpression(cruleParser::ThenExpressionContext * ctx) override { 
+        auto expression = std::make_shared<ThenExpression>();
+        expression->set_crl_text(ctx->getText());
+        st_.push(expression);
+    }
+    void exitThenExpression(cruleParser::ThenExpressionContext * ctx) override { 
+        std::shared_ptr<Node> expression = st_.top();
+        st_.pop();
+
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type_semantic<IThenExpressionAcceptor>(acceptor, "bad cast to IThenExpressionAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IThenExpressionAcceptor>(acceptor);
+        acc->accept_then_expression(std::dynamic_pointer_cast<ThenExpression>(expression));
+    }
 
     void enterAssignment(cruleParser::AssignmentContext * ctx) override { }
     void exitAssignment(cruleParser::AssignmentContext * ctx) override { }

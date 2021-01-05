@@ -9,7 +9,8 @@
 
 namespace rule_engine {
 
-class RuleEntry: public Node, public IIfScopeAcceptor, public IThenScopeAcceptor {
+class RuleEntry: public Node, 
+    public IIfScopeAcceptor, public IThenScopeAcceptor {
 public:
     RuleEntry() {}
     bool evaluate(IDataContext* dctx) {
@@ -17,10 +18,10 @@ public:
     }
     void execute(IDataContext* dctx) {}
 
-    void accept_if_scope(std::shared_ptr<IfScope> node) {
+    virtual void accept_if_scope(std::shared_ptr<IfScope> node) {
         if_scope_ = node;
     }
-    void accept_then_scope(std::shared_ptr<ThenScope> node) {
+    virtual void accept_then_scope(std::shared_ptr<ThenScope> node) {
         then_scope_ = node;
     } 
     const std::string& get_name() {return name_;}
