@@ -23,6 +23,7 @@ public:
     void accept_then_scope(std::shared_ptr<ThenScope> node) {
         then_scope_ = node;
     } 
+    const std::string& get_name() {return name_;}
 private:
     std::string name_;
     std::string description_;

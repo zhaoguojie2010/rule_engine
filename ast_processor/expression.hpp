@@ -33,49 +33,50 @@ public:
 
     rttr::variant evaluate(IDataContext* dctx) {
         // if(evaluated_) return evaluation_;
+        rttr::variant var;
         if(atom_) {
-            return atom_->evaluate(dctx);
+            var = atom_->evaluate(dctx);
         } else if(left_ && !right_) {
-            return left_->evaluate(dctx);
+            var = left_->evaluate(dctx);
         } else if(left_ && right_) {
             auto left = left_->evaluate(dctx);
             auto right = right_->evaluate(dctx);
             switch(op_type_) {
                 case MUL:
-                    return process_multiplication(left, right);
+                    var = process_multiplication(left, right);
                 case DIV:
-                    return process_division(left, right);
+                    var = process_division(left, right);
                 case MOD:
-                    return process_mod(left, right);
+                    var = process_mod(left, right);
                 case ADD:
-                    return process_addition(left, right);
+                    var = process_addition(left, right);
                 case SUB:
-                    return process_subtraction(left, right);
+                    var = process_subtraction(left, right);
                 case AND:
-                    return process_and(left, right);
+                    var = process_and(left, right);
                 case OR:
-                    return process_or(left, right);
+                    var = process_or(left, right);
                 case GT:
-                    return process_gt(left, right);
+                    var = process_gt(left, right);
                 case GET:
-                    return process_get(left, right);
+                    var = process_get(left, right);
                 case LT:
-                    return process_lt(left, right);
+                    var = process_lt(left, right);
                 case LET:
-                    return process_let(left, right);
+                    var = process_let(left, right);
                 case BITAND:
-                    return process_bit_and(left, right);
+                    var = process_bit_and(left, right);
                 case BITOR:
-                    return process_bit_or(left, right);
+                    var = process_bit_or(left, right);
                 case EQ:
-                    return process_equal(left, right);
+                    var = process_equal(left, right);
                 case NEQ:
-                    return process_not_equal(left, right);
+                    var = process_not_equal(left, right);
                 default:
                     ;
             }
         }
-        return rttr::variant();
+        return var;
     }
 
     void set_negation() {

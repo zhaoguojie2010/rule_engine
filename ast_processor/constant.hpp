@@ -79,19 +79,21 @@ private:
     };
 };
 
-class Constant: public Node {
+class Constant: public Node, 
+    public IFloatLiteralAcceptor, public IIntegerLiteralAcceptor,
+    public IStringLiteralAcceptor, public IBooleanLiteralAcceptor {
 public:
     Constant():Node() {}
-    void accept_string_literal(std::shared_ptr<Node> child) {
+    virtual void accept_string_literal(std::shared_ptr<Node> child) {
         v_ = dynamic_cast<StringLiteral*>(child.get())->string_;
     }
-    void accept_int_literal(std::shared_ptr<Node> child) {
+    virtual void accept_int_literal(std::shared_ptr<Node> child) {
         v_ = dynamic_cast<IntegerLiteral*>(child.get())->int_;
     }
-    void accept_float_literal(std::shared_ptr<Node> child) {
+    virtual void accept_float_literal(std::shared_ptr<Node> child) {
         v_ = dynamic_cast<FloatLiteral*>(child.get())->float_;
     }
-    void accept_bool_literal(std::shared_ptr<Node> child) {
+    virtual void accept_bool_literal(std::shared_ptr<Node> child) {
         v_ = dynamic_cast<BooleanLiteral*>(child.get())->bool_;
     }
     virtual ~Constant() {}

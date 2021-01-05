@@ -9,7 +9,7 @@
 namespace rule_engine {
 
 void info(const std::string& s) {
-
+    std::cout << s << std::endl;
 }
 
 void warn(const std::string& s) {
@@ -17,7 +17,7 @@ void warn(const std::string& s) {
 }
 
 void error(const std::string& s) {
-
+    std::cout << s << std::endl;
 }
 
 template<typename T>

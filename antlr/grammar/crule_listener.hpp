@@ -18,11 +18,31 @@ namespace rule_engine {
 
 class CruleListener: public cruleBaseListener {
 public:
-    void enterCrl(cruleParser::CrlContext * ctx) override { }
-    void exitCrl(cruleParser::CrlContext * ctx) override { }
+    void enterCrl(cruleParser::CrlContext * ctx) override { 
+        auto crl = std::make_shared<Crl>();
+        st_.push(crl);
+    }
+    void exitCrl(cruleParser::CrlContext * ctx) override { 
+        auto crl = st_.top();
+        st_.pop();
 
-    void enterRuleEntry(cruleParser::RuleEntryContext * ctx) override { }
-    void exitRuleEntry(cruleParser::RuleEntryContext * ctx) override { }
+        crl_ = std::dynamic_pointer_cast<Crl>(crl);
+    }
+
+    void enterRuleEntry(cruleParser::RuleEntryContext * ctx) override { 
+        auto entry = std::make_shared<RuleEntry>();
+        entry->set_crl_text(ctx->getText());
+        st_.push(entry);
+    }
+    void exitRuleEntry(cruleParser::RuleEntryContext * ctx) override { 
+        std::shared_ptr<Node> entry = st_.top();
+        st_.pop();
+
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type_semantic<IRuleEntryAcceptor>(acceptor, "bad cast to IRuleEntryAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IRuleEntryAcceptor>(acceptor);
+        acc->accept_rule_entry(std::dynamic_pointer_cast<RuleEntry>(entry));
+    }
 
     void enterSalience(cruleParser::SalienceContext * ctx) override { }
     void exitSalience(cruleParser::SalienceContext * ctx) override { }

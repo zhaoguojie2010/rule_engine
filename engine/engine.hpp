@@ -27,7 +27,7 @@ public:
         antlr4::CommonTokenStream tokens(&lexer);
         cruleParser parser(&tokens);
         CruleListener listener;
-        antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, parser.expression());
+        antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, parser.crl());
 
         std::unique_lock lock(mtx_);
         rules_ = rules;

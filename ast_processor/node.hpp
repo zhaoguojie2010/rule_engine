@@ -43,6 +43,11 @@ class Expression;
 class ExpressionAtom;
 class Variable;
 class Constant;
+class RuleEntry;
+
+struct IRuleEntryAcceptor {
+    virtual void accept_rule_entry(std::shared_ptr<RuleEntry>) = 0;
+};
 struct IExpressionAcceptor {
     virtual void accept_expression(std::shared_ptr<Expression>) = 0;
 };
