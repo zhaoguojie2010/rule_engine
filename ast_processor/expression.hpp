@@ -31,7 +31,7 @@ class Expression: public Node, public IExpressionAcceptor, public IExpressionAto
 public:
     Expression():negation_(false), evaluated_(false) {}
 
-    rttr::instance evaluate(IDataContext* dctx) {
+    rttr::variant evaluate(IDataContext* dctx) {
         if(evaluated_) return evaluation_;
         if(atom_) {
             return atom_->evaluate(dctx);
@@ -75,7 +75,7 @@ public:
                     ;
             }
         }
-        return rttr::instance();
+        return rttr::variant();
     }
 
     void set_negation() {
@@ -111,7 +111,7 @@ private:
     bool bin_evaluation_;
 
     // holds the native variable
-    rttr::instance evaluation_;
+    rttr::variant evaluation_;
 };
 
 

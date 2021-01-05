@@ -19,8 +19,8 @@ class ExpressionAtom: public Node, public IExpressionAtomAcceptor,
 public:
     ExpressionAtom():negation_(false), evaluated_(false) {}
 
-    rttr::instance evaluate(IDataContext *dctx) {
-        return rttr::instance();
+    rttr::variant evaluate(IDataContext *dctx) {
+        return rttr::variant();
     }
 
     virtual void accept_expression_atom(std::shared_ptr<ExpressionAtom> atom) {
