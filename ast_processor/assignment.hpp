@@ -24,7 +24,8 @@ public:
     void accept_expression(std::shared_ptr<Expression> expr) {
         expression_ = expr;
     }
-    void accept_variable(std::shared_ptr<Variable> var) {
+    virtual void accept_variable(std::shared_ptr<Variable> var) {
+        var->set_top_level();
         variable_ = var;
     }
 private:

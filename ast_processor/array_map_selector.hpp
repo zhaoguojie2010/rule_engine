@@ -2,10 +2,10 @@
 #define _RULE_ENGINE_SELECTOR_
 
 #include "node.hpp"
-#include "expression.hpp"
+//#include "expression.hpp"
 
 namespace rule_engine {
-
+class Expression;
 class ArrayMapSelector: public Node, public IExpressionAcceptor {
 public:
     ArrayMapSelector() {}

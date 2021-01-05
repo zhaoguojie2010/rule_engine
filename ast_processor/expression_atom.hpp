@@ -5,14 +5,14 @@
 
 #include "node.hpp"
 #include "constant.hpp"
-//#include "variable.hpp"
+#include "variable.hpp"
 #include "function.hpp"
-//#include "array_map_selector.hpp"
+#include "array_map_selector.hpp"
 
 namespace rule_engine {
 
-class ArrayMapSelector;
-class Variable;
+//class ArrayMapSelector;
+//class Variable;
 
 class ExpressionAtom: public Node, public IExpressionAtomAcceptor, 
     public IVariableAcceptor, public IConstantAcceptor {
@@ -20,13 +20,22 @@ public:
     ExpressionAtom():negation_(false), evaluated_(false) {}
 
     rttr::variant evaluate(IDataContext *dctx) {
-        return rttr::variant();
+        rttr::variant var;
+        if(constant_) {
+            var =  constant_->evaluate();
+        } else if(variable_) {
+            var = variable_->evaluate(dctx);
+        } else {
+            // TODO:
+        }
+        return var;
     }
 
     virtual void accept_expression_atom(std::shared_ptr<ExpressionAtom> atom) {
         atom_ = atom;
     }
     virtual void accept_variable(std::shared_ptr<Variable> var) {
+        var->set_top_level();
         variable_ = var;
     }
     virtual void accept_constant(std::shared_ptr<Constant> c) {

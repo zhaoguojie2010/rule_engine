@@ -81,30 +81,27 @@ private:
 
 class Constant: public Node {
 public:
-    Constant():Node(), v_() {}
+    Constant():Node() {}
     void accept_string_literal(std::shared_ptr<Node> child) {
-        v_.set_string(dynamic_cast<StringLiteral*>(child.get())->string_);
+        v_ = dynamic_cast<StringLiteral*>(child.get())->string_;
     }
     void accept_int_literal(std::shared_ptr<Node> child) {
-        v_.set_int(dynamic_cast<IntegerLiteral*>(child.get())->int_);
+        v_ = dynamic_cast<IntegerLiteral*>(child.get())->int_;
     }
     void accept_float_literal(std::shared_ptr<Node> child) {
-        v_.set_float(dynamic_cast<FloatLiteral*>(child.get())->float_);
+        v_ = dynamic_cast<FloatLiteral*>(child.get())->float_;
     }
     void accept_bool_literal(std::shared_ptr<Node> child) {
-        v_.set_bool(dynamic_cast<BooleanLiteral*>(child.get())->bool_);
+        v_ = dynamic_cast<BooleanLiteral*>(child.get())->bool_;
     }
     virtual ~Constant() {}
 
-    Var& evaluate() {
+    rttr::variant evaluate() {
         return v_;
     }
 private:
-    Var v_;
-    // std::shared_ptr<StringLiteral> string_;
-    // std::shared_ptr<IntegerLiteral> int_;
-    // std::shared_ptr<FloatLiteral> float_;
-    // std::shared_ptr<BooleanLiteral> bool_;
+    rttr::variant v_;
+
 };
 
 }

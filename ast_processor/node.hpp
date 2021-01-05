@@ -33,6 +33,7 @@ private:
 };
 
 class IDataContext {
+public:
     virtual void add(const std::string& name, rttr::instance obj) = 0;
     virtual void remove(const std::string& name) = 0;
     virtual rttr::instance get(const std::string& name) = 0;

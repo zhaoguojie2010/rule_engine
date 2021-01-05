@@ -29,10 +29,10 @@ enum OP_TYPE {
 
 class Expression: public Node, public IExpressionAcceptor, public IExpressionAtomAcceptor {
 public:
-    Expression():negation_(false), evaluated_(false) {}
+    Expression():negation_(false) {}
 
     rttr::variant evaluate(IDataContext* dctx) {
-        if(evaluated_) return evaluation_;
+        // if(evaluated_) return evaluation_;
         if(atom_) {
             return atom_->evaluate(dctx);
         } else if(left_ && !right_) {
@@ -98,20 +98,20 @@ public:
         op_type_ = t;
     }
 
-    bool evaluated() {return evaluated_;}
+    // bool evaluated() {return evaluated_;}
 private:
     std::shared_ptr<Expression> left_;
     std::shared_ptr<Expression> right_;
     std::shared_ptr<ExpressionAtom> atom_;
     OP_TYPE op_type_;
     bool negation_;
-    bool evaluated_;
+    // bool evaluated_;
 
     // holds the result of a binary operation
-    bool bin_evaluation_;
+    // bool bin_evaluation_;
 
     // holds the native variable
-    rttr::variant evaluation_;
+    // rttr::variant evaluation_;
 };
 
 
