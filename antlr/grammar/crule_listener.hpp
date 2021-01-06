@@ -113,8 +113,20 @@ public:
         acc->accept_then_expression(std::dynamic_pointer_cast<ThenExpression>(expression));
     }
 
-    void enterAssignment(cruleParser::AssignmentContext * ctx) override { }
-    void exitAssignment(cruleParser::AssignmentContext * ctx) override { }
+    void enterAssignment(cruleParser::AssignmentContext * ctx) override { 
+        auto assignment = std::make_shared<Assignment>();
+        assignment->set_crl_text(ctx->getText());
+        st_.push(assignment);
+    }
+    void exitAssignment(cruleParser::AssignmentContext * ctx) override { 
+        std::shared_ptr<Node> assignment = st_.top();
+        st_.pop();
+
+        std::shared_ptr<Node> acceptor = st_.top();
+        assert_type_semantic<IAssignmentAcceptor>(acceptor, "bad cast to IAssignmentAcceptor: " + ctx->getText());
+        auto acc = std::dynamic_pointer_cast<IAssignmentAcceptor>(acceptor);
+        acc->accept_assignment(std::dynamic_pointer_cast<Assignment>(assignment));
+    }
 
     void enterExpression(cruleParser::ExpressionContext * ctx) override { 
         auto expr = std::make_shared<Expression>();

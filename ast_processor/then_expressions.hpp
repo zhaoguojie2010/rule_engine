@@ -15,6 +15,11 @@ public:
     virtual void accept_then_expression(std::shared_ptr<ThenExpression> expr) {
         expressions_.push_back(expr);
     }
+    void execute(IDataContext* dctx) {
+        for(auto expr:expressions_) {
+            expr->execute(dctx);
+        }
+    }
 private:
     std::vector<std::shared_ptr<ThenExpression>> expressions_;
 };

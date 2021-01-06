@@ -16,7 +16,9 @@ public:
     bool evaluate(IDataContext* dctx) {
         return if_scope_->evaluate(dctx);
     }
-    void execute(IDataContext* dctx) {}
+    void execute(IDataContext* dctx) {
+        then_scope_->execute(dctx);
+    }
 
     virtual void accept_if_scope(std::shared_ptr<IfScope> node) {
         if_scope_ = node;

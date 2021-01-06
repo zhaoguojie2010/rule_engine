@@ -34,7 +34,7 @@ int main() {
             if 
                 Assassin.target.gender == "male" && Assassin.target.age > 18
             then
-                //Assassin.decided_to_kill = true;
+                Assassin.decided_to_kill = true;
                 //Assassin.kill();
                 10;
         }

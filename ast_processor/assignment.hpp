@@ -28,6 +28,11 @@ public:
         var->set_top_level();
         variable_ = var;
     }
+
+    void execute(IDataContext* dctx) {
+        auto right = expression_->evaluate(dctx);
+        variable_->assign(dctx, right);
+    }
 private:
     std::shared_ptr<Variable> variable_;
     std::shared_ptr<Expression> expression_;

@@ -47,6 +47,7 @@ class RuleEntry;
 class ThenScope;
 class ThenExpressions;
 class ThenExpression;
+class Assignment;
 
 struct IRuleEntryAcceptor {
     virtual void accept_rule_entry(std::shared_ptr<RuleEntry>) = 0;
@@ -61,6 +62,10 @@ struct IExpressionAtomAcceptor {
 
 struct IVariableAcceptor {
     virtual void accept_variable(std::shared_ptr<Variable>) = 0;
+};
+
+struct IAssignmentAcceptor {
+    virtual void accept_assignment(std::shared_ptr<Assignment>) = 0;
 };
 
 struct IMemberVariableAcceptor {
