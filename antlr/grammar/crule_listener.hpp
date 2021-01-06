@@ -196,10 +196,12 @@ public:
         st_.push(c);
     }
     void exitConstant(cruleParser::ConstantContext * ctx) override {
-        auto c = st_.top();
+        auto c = std::dynamic_pointer_cast<Constant>(st_.top());
         st_.pop();
+
         auto acceptor = st_.top();
-        acceptor->accept(c);
+        assert_type_semantic<IConstantAcceptor>(acceptor, "bad cast to IConstantAcceptor");
+        std::dynamic_pointer_cast<IConstantAcceptor>(acceptor)->accept_constant(c);
     }
 
     void enterVariable(cruleParser::VariableContext * ctx) override { 
@@ -223,7 +225,11 @@ public:
     void exitArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { }
 
     void enterMemberVariable(cruleParser::MemberVariableContext * ctx) override { }
-    void exitMemberVariable(cruleParser::MemberVariableContext * ctx) override { }
+    void exitMemberVariable(cruleParser::MemberVariableContext * ctx) override { 
+        auto acceptor = st_.top();
+        assert_type_semantic<IMemberVariableAcceptor>(acceptor, "bad cast to IVariableAcceptor");
+        std::dynamic_pointer_cast<IMemberVariableAcceptor>(acceptor)->accept_member_variable(ctx->SIMPLENAME()->getText());
+    }
 
     void enterFunctionCall(cruleParser::FunctionCallContext * ctx) override { }
     void exitFunctionCall(cruleParser::FunctionCallContext * ctx) override { }
@@ -277,6 +283,7 @@ public:
     void exitStringLiteral(cruleParser::StringLiteralContext * ctx) override {
         auto l = std::make_shared<StringLiteral>();
         l->string_ = ctx->getText();
+        l->string_ = l->string_.substr(1, l->string_.size()-2);
         std::shared_ptr<Node> acceptor = st_.top();
         auto p = dynamic_cast<IStringLiteralAcceptor*>(acceptor.get());
         if(p==nullptr) {

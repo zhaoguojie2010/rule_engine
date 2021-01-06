@@ -21,9 +21,9 @@ RTTR_REGISTRATION {
         .method("kill", rttr::select_non_const(&Killer::kill))
     ;
 
-    rttr::registration::class_<Target>("Killer")
+    rttr::registration::class_<Target>("Target")
         .property("age", &Target::age)
-        .property("gennder", &Target::gender)
+        .property("gender", &Target::gender)
     ;
 }
 
@@ -32,14 +32,13 @@ int main() {
     const char* rule = R"(
         rule kill "this is a description" {
             if 
-                Assassin.target.age > 18 // && Assasin.target.gender == "male"
+                Assassin.target.gender == "male" && Assassin.target.age > 18
             then
                 //Assassin.decided_to_kill = true;
                 //Assassin.kill();
                 10;
         }
     )";
-    std::cout << rule << std::endl;
 
     Killer killer;
     killer.target.age = 19;

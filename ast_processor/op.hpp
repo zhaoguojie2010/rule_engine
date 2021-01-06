@@ -24,12 +24,23 @@ rttr::variant process_subtraction(rttr::variant& left, rttr::variant& right) {
     return rttr::variant();
 }
 
+// TODO: tune and & or ops
 rttr::variant process_and(rttr::variant& left, rttr::variant& right) {
-    return rttr::variant();
+    if(left.get_type() != rttr::type::get<bool>() || right.get_type() != rttr::type::get<bool>()) {
+        error("oprand has to be boolean type in process_and");
+    }
+
+    if(left.to_bool() && right.to_bool()) return true;
+    return false;
 }
 
 rttr::variant process_or(rttr::variant& left, rttr::variant& right) {
-    return rttr::variant();
+    if(left.get_type() != rttr::type::get<bool>() || right.get_type() != rttr::type::get<bool>()) {
+        error("oprand has to be boolean type in process_and");
+    }
+
+    if(left.to_bool() || right.to_bool()) return true;
+    return false;
 }
 
 rttr::variant process_gt(rttr::variant& left, rttr::variant& right) {

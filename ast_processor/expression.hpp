@@ -44,34 +44,49 @@ public:
             switch(op_type_) {
                 case MUL:
                     var = process_multiplication(left, right);
+                    break;
                 case DIV:
                     var = process_division(left, right);
+                    break;
                 case MOD:
                     var = process_mod(left, right);
+                    break;
                 case ADD:
                     var = process_addition(left, right);
+                    break;
                 case SUB:
                     var = process_subtraction(left, right);
+                    break;
                 case AND:
                     var = process_and(left, right);
+                    break;
                 case OR:
                     var = process_or(left, right);
+                    break;
                 case GT:
                     var = process_gt(left, right);
+                    break;
                 case GET:
                     var = process_get(left, right);
+                    break;
                 case LT:
                     var = process_lt(left, right);
+                    break;
                 case LET:
                     var = process_let(left, right);
+                    break;
                 case BITAND:
                     var = process_bit_and(left, right);
+                    break;
                 case BITOR:
                     var = process_bit_or(left, right);
+                    break;
                 case EQ:
                     var = process_equal(left, right);
+                    break;
                 case NEQ:
                     var = process_not_equal(left, right);
+                    break;
                 default:
                     ;
             }

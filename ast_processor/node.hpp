@@ -63,6 +63,10 @@ struct IVariableAcceptor {
     virtual void accept_variable(std::shared_ptr<Variable>) = 0;
 };
 
+struct IMemberVariableAcceptor {
+    virtual void accept_member_variable(const std::string&) = 0;
+};
+
 struct IConstantAcceptor {
     virtual void accept_constant(std::shared_ptr<Constant>) = 0;
 };

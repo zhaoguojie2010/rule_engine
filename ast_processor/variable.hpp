@@ -21,12 +21,16 @@ namespace rule_engine {
  *    this is a terminal node, the obj "my_struct" is registered by data_context,
  *    hence its evaluate() should return an rttr:instance, NOT rttr::variant
  */
-class Variable: public Node, public IVariableAcceptor {
+class Variable: public Node, public IVariableAcceptor, public IMemberVariableAcceptor {
 public:
     Variable():is_top_level_(false) {}
 
     virtual void accept_variable(std::shared_ptr<Variable> var) {
         variable_ = var;
+    }
+
+    virtual void accept_member_variable(const std::string& var_name) {
+        name_ = var_name;
     }
 
     void set_name(const std::string& name) {name_ = name;}
@@ -40,6 +44,7 @@ public:
     }
 
     rttr::variant evaluate(IDataContext* dctx) {
+        // info("evaluate " + get_crl_text() + " " + name_);
         rttr::variant var;
         if(!has_parent()) {
             // TODO: simple name variable
@@ -57,6 +62,7 @@ public:
         return var;
     }
     rttr::instance instance(IDataContext* dctx) {
+        // info("instance " + get_crl_text() + " " + name_);
         return dctx->get(name_);
     }
 private:
