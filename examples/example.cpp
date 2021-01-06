@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <cassert>
 #include "rule_engine.hpp"
 
 struct Target {
@@ -11,6 +12,11 @@ struct Killer {
     bool decided_to_kill;
     Target target;
     void kill() {}
+};
+
+struct Police {
+    Police():criminal_count(0) {}
+    int criminal_count;
 };
 
 
@@ -25,6 +31,10 @@ RTTR_REGISTRATION {
         .property("age", &Target::age)
         .property("gender", &Target::gender)
     ;
+
+    rttr::registration::class_<Police>("Police")
+        .property("criminal_count", &Police::criminal_count)
+    ;
 }
 
 
@@ -35,6 +45,7 @@ int main() {
                 Assassin.target.gender == "male" && Assassin.target.age > 18
             then
                 Assassin.decided_to_kill = true;
+                Police.criminal_count = 1;
                 //Assassin.kill();
                 10;
         }
@@ -43,13 +54,16 @@ int main() {
     Killer killer;
     killer.target.age = 19;
     killer.target.gender = "male";
+    killer.decided_to_kill = false;
 
+    Police police;
     rule_engine::Engine e;
     e.load_rules(rule);
     rule_engine::DataContext dctx;
-    //dctx.add("Assassin", std::variant<Killer*>(&killer));
     dctx.add("Assassin", killer);
+    dctx.add("Police", police);
     e.execute(&dctx);
-
+    assert(killer.decided_to_kill);  
+    assert(police.criminal_count == 1);
     return 0;
 }

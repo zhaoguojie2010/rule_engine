@@ -8,7 +8,7 @@ CC=gcc
 CXX=g++
 
 # Modules
-MODULE=single_struct
+MODULE=example
 
 #######################GCC MACROS####################
 # STREAM_SYNC = stream sync
@@ -86,7 +86,7 @@ clean:
 	@rm -rf $(BUILDPATHROOT)
 .phony:clean
 
-OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -v "examples/single_struct.cpp"))
+OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -v "examples/example.cpp"))
 
 %.o:%.cpp
 	@echo "[[1;32;40mBUILD[0m][Target:'[1;32;40m$<[0m']"
@@ -103,7 +103,7 @@ OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -
 
 $(BUILDPATHROOT)/$(MODULE) : $(OBJS) 
 	$(CXX) -v -o $@ $(INC_DIR) $(LDFLAGS) $(CXXFLAGS) \
-		$(EXAMPLE_DIR)/single_struct.cpp $(OBJS) $(LIB_INC)
+		$(EXAMPLE_DIR)/example.cpp $(OBJS) $(LIB_INC)
 
 PRE_BUILD:
 	@mkdir -p $(BUILDPATHROOT)
