@@ -24,7 +24,7 @@ RTTR_REGISTRATION {
     rttr::registration::class_<Killer>("Killer")
         .property("decided_to_kill", &Killer::decided_to_kill)
         .property("target", &Killer::target)
-        .method("kill", rttr::select_non_const(&Killer::kill))
+        .method("kill", &Killer::kill)
     ;
 
     rttr::registration::class_<Target>("Target")
@@ -46,7 +46,7 @@ int main() {
             then
                 Assassin.decided_to_kill = true;
                 Police.criminal_count = 1;
-                //Assassin.kill();
+                Assassin.kill();
                 10;
         }
     )";

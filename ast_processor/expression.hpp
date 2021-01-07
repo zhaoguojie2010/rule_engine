@@ -27,7 +27,8 @@ enum OP_TYPE {
     NEQ
 };
 
-class Expression: public Node, public IExpressionAcceptor, public IExpressionAtomAcceptor {
+class Expression: public Node, public IExpressionAcceptor, 
+    public IExpressionAtomAcceptor, public IEvaluable {
 public:
     Expression():negation_(false) {}
 

@@ -48,7 +48,16 @@ class ThenScope;
 class ThenExpressions;
 class ThenExpression;
 class Assignment;
+class Function;
+class Arguments;
 
+struct IExecutable {
+    virtual void execute(IDataContext*) = 0;
+};
+
+struct IEvaluable {
+    virtual rttr::variant evaluate(IDataContext*) = 0;
+};
 struct IRuleEntryAcceptor {
     virtual void accept_rule_entry(std::shared_ptr<RuleEntry>) = 0;
 };
@@ -62,6 +71,14 @@ struct IExpressionAtomAcceptor {
 
 struct IVariableAcceptor {
     virtual void accept_variable(std::shared_ptr<Variable>) = 0;
+};
+
+struct IFunctionAcceptor {
+    virtual void accept_function(std::shared_ptr<Function>) = 0;
+};
+
+struct IArgumentsAcceptor {
+    virtual void accept_arguments(std::shared_ptr<Arguments>) = 0;
 };
 
 struct IAssignmentAcceptor {

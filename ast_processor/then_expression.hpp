@@ -24,6 +24,8 @@ public:
     void execute(IDataContext* dctx) {
         if(assignment_) {
             assignment_->execute(dctx);
+        } else if(atom_) {
+            atom_->execute(dctx);
         }
     }
 private:

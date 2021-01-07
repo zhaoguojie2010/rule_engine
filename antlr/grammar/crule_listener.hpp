@@ -243,14 +243,37 @@ public:
         std::dynamic_pointer_cast<IMemberVariableAcceptor>(acceptor)->accept_member_variable(ctx->SIMPLENAME()->getText());
     }
 
-    void enterFunctionCall(cruleParser::FunctionCallContext * ctx) override { }
-    void exitFunctionCall(cruleParser::FunctionCallContext * ctx) override { }
+    void enterFunctionCall(cruleParser::FunctionCallContext * ctx) override { 
+        auto func = std::make_shared<Function>();
+        func->set_crl_text(ctx->getText());
+        func->set_name(ctx->SIMPLENAME()->getText());
+        st_.push(func);
+    }
+    void exitFunctionCall(cruleParser::FunctionCallContext * ctx) override { 
+        auto func = std::dynamic_pointer_cast<Function>(st_.top());
+        st_.pop();
+
+        auto acceptor = st_.top();
+        assert_type_semantic<IFunctionAcceptor>(acceptor, "bad cast to IFunctionAcceptor");
+        std::dynamic_pointer_cast<IFunctionAcceptor>(acceptor)->accept_function(func);
+    }
 
     void enterMethodCall(cruleParser::MethodCallContext * ctx) override { }
     void exitMethodCall(cruleParser::MethodCallContext * ctx) override { }
 
-    void enterArgumentList(cruleParser::ArgumentListContext * ctx) override { }
-    void exitArgumentList(cruleParser::ArgumentListContext * ctx) override { }
+    void enterArgumentList(cruleParser::ArgumentListContext * ctx) override { 
+        auto args = std::make_shared<Arguments>();
+        args->set_crl_text(ctx->getText());
+        st_.push(args);
+    }
+    void exitArgumentList(cruleParser::ArgumentListContext * ctx) override { 
+        auto args = std::dynamic_pointer_cast<Arguments>(st_.top());
+        st_.pop();
+
+        auto acceptor = st_.top();
+        assert_type_semantic<IArgumentsAcceptor>(acceptor, "bad cast to IArgumentsAcceptor");
+        std::dynamic_pointer_cast<IArgumentsAcceptor>(acceptor)->accept_arguments(args);
+    }
 
     void enterFloatLiteral(cruleParser::FloatLiteralContext * ctx) override { }
     void exitFloatLiteral(cruleParser::FloatLiteralContext * ctx) override {
