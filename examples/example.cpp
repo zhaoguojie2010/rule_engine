@@ -6,12 +6,15 @@
 struct Target {
     int age;
     std::string gender;
+    std::string name;
 };
 
 struct Killer {
     bool decided_to_kill;
     Target target;
-    void kill() {}
+    void kill() {
+        std::cout << "killing target: " << target.name << std::endl;
+    }
 };
 
 struct Police {
@@ -30,6 +33,7 @@ RTTR_REGISTRATION {
     rttr::registration::class_<Target>("Target")
         .property("age", &Target::age)
         .property("gender", &Target::gender)
+        .property("name", &Target::name)
     ;
 
     rttr::registration::class_<Police>("Police")
@@ -54,6 +58,7 @@ int main() {
     Killer killer;
     killer.target.age = 19;
     killer.target.gender = "male";
+    killer.target.name = "chuck norris";
     killer.decided_to_kill = false;
 
     Police police;

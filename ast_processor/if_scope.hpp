@@ -19,7 +19,7 @@ public:
         if(result.get_type() != rttr::type::get<bool>()) {
             error("invalid IfScope: not a boolean expression");
         }
-        info("IfScope evaluated: " + result.to_string());
+        // info("IfScope evaluated: " + result.to_string());
         return result.to_bool();
     }
     void accept_expression(std::shared_ptr<Expression> expr) {

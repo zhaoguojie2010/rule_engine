@@ -59,20 +59,35 @@ public:
     }
 
     rttr::variant evaluate_method(IDataContext *dctx) {
-        auto var_atom = atom_->evaluate(dctx);
-        rttr::method func = var_atom.get_type().get_method(function_->get_name());
-        auto args = function_->evaluate_args(dctx);
+        rttr::variant ans;
+        if(atom_->contain_instance()) {
+            rttr::instance inst = atom_->instance(dctx);
+            auto func = inst.get_type().get_method(function_->get_name());
+            auto args = function_->evaluate_args(dctx);
+            ans = func.invoke_variadic(inst, *args);
+        } else {
+            auto var_atom = atom_->evaluate(dctx);
+            rttr::method func = var_atom.get_type().get_method(function_->get_name());
+            auto args = function_->evaluate_args(dctx);
 
-        // invoke the method
-        auto ans = func.invoke_variadic(var_atom, *args);
+            // invoke the method
+            ans = func.invoke_variadic(var_atom, *args);
 
-        if(atom_->is_assignable()) {
-            // we need to update object instance here caz the method
-            // might manipulate member variables
-            atom_->assign(dctx, var_atom);
+            if(atom_->is_assignable()) {
+                // we need to update object instance here caz the method
+                // might manipulate member variables
+                atom_->assign(dctx, var_atom);
+            }
         }
-
         return ans;
+    }
+
+    bool contain_instance() {
+        return !atom_ && variable_ && !variable_->has_parent();
+    }
+
+    rttr::instance instance(IDataContext *dctx) {
+        return variable_->instance(dctx);
     }
 
     virtual void accept_expression_atom(std::shared_ptr<ExpressionAtom> atom) {
