@@ -19,6 +19,11 @@ struct Killer {
     }
 };
 
+struct TheManagement {
+    std::string location;
+    Killer killer;
+};
+
 struct Police {
     Police():homicide_case(0) {}
     int homicide_case;
@@ -26,6 +31,11 @@ struct Police {
 
 
 RTTR_REGISTRATION {
+    rttr::registration::class_<TheManagement>("TheManagement")
+        .property("location", &TheManagement::location)
+        .property("killer", &TheManagement::killer)
+    ;
+
     rttr::registration::class_<Killer>("Killer")
         .property("bullet", &Killer::bullet)
         .property("target", &Killer::target)
@@ -74,5 +84,29 @@ int main() {
     assert(killer.bullet == 0);  
     // std::cout << "bullet " << killer.bullet << " homicide case " << police.homicide_case << std::endl;
     assert(police.homicide_case == 10);
+    assert(!killer.target.alive);
+
+    TheManagement management;
+    management.location = "hotel cortez";
+    management.killer.bullet = 5;
+    management.killer.target.age = 14;
+    management.killer.target.name = "jesus christ";
+    management.killer.target.alive = true;
+    rule_engine::DataContext dctx1;
+    dctx1.add("TheManagement", management);
+    dctx1.add("Police", police);
+    const char* rule1 = R"(
+        rule kill "this is a description" {
+            if 
+                TheManagement.killer.bullet > 4
+            then
+                TheManagement.killer.kill();
+        }
+    )";
+    e.load_rules(rule1);
+    e.execute(&dctx1);
+    
+    assert(management.killer.bullet==4);
+    assert(!management.killer.target.alive);
     return 0;
 }
