@@ -70,7 +70,6 @@ rule_engine is a c++ rule engine library
        killer.target.age = 19;
        killer.target.name = "chuck norris";
        killer.has_bullet = true;
-   		Police police;
    
        rule_engine::Engine e; // create an engine
        e.load_rules(rule);    // load your rule so that engine can execute it
