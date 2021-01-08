@@ -20,6 +20,14 @@ void error(const std::string& s) {
     std::cout << s << std::endl;
 }
 
+void semantic_error(const std::string& s) {
+    std::cout << s << std::endl;
+}
+
+void runtime_error(const std::string& s) {
+    std::cout << s << std::endl;
+}
+
 template<typename T>
 void assert_type_semantic(std::shared_ptr<Node> ptr, const std::string& s) {
     if(dynamic_cast<T*>(ptr.get()) == nullptr) {

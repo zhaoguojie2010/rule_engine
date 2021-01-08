@@ -9,15 +9,6 @@
 
 namespace rule_engine {
 
-enum ASSGN_TYPE {
-    ASSIGN,
-    PLUS_ASSIGN,
-    MINUS_ASSIGN,
-    MUL_ASSIGN,
-    DIV_ASSIGN,
-    MOD_ASSIGN
-};
-
 class Assignment: public Node, public IExpressionAcceptor, public IVariableAcceptor {
 public:
     Assignment() {}
@@ -31,11 +22,14 @@ public:
 
     void execute(IDataContext* dctx) {
         auto right = expression_->evaluate(dctx);
-        variable_->assign(dctx, right);
+        variable_->assign(dctx, right, type_);
     }
+
+    void set_type(ASSIGN_TYPE t) {type_ = t;}
 private:
     std::shared_ptr<Variable> variable_;
     std::shared_ptr<Expression> expression_;
+    ASSIGN_TYPE type_;
 };
 
 }

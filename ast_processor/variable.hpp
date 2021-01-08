@@ -2,6 +2,7 @@
 #define _RULE_ENGINE_VARIABLE_
 
 #include "node.hpp"
+#include "op.hpp"
 #include "variable.hpp"
 #include "array_map_selector.hpp"
 
@@ -66,7 +67,7 @@ public:
         return dctx->get(name_);
     }
 
-    void assign(IDataContext* dctx, rttr::variant var) {
+    void assign(IDataContext* dctx, rttr::variant var, ASSIGN_TYPE t = ASSIGN) {
         if(!has_parent()) {
             // TODO: 
         } else {
@@ -74,14 +75,41 @@ public:
             if(parent_->has_parent()) {
                 auto parent_var = parent_->evaluate(dctx);
                 rttr::property prop = parent_var.get_type().get_property(name_);
+                var = actual_assigned_value(parent_var, prop, var, t);
                 prop.set_value(parent_var, var);
                 parent_->assign(dctx, parent_var);
             } else {
                 auto inst = parent_->instance(dctx);
                 rttr::property prop = inst.get_type().get_property(name_);
+                var = actual_assigned_value(inst, prop, var, t);
                 prop.set_value(inst, var);
             }
         }
+    }
+    rttr::variant actual_assigned_value(rttr::instance V, rttr::property prop, rttr::variant var, ASSIGN_TYPE t) {
+        if(is_top_level_) {
+            auto original_var = prop.get_value(V);
+            switch(t) {
+                case PLUS_ASSIGN:
+                    var = process_addition(original_var, var);
+                    break;
+                case MINUS_ASSIGN:
+                    var = process_subtraction(original_var, var);
+                    break;
+                case MUL_ASSIGN:
+                    var = process_multiplication(original_var, var);
+                    break;
+                case DIV_ASSIGN:
+                    var = process_division(original_var, var);
+                    break;
+                case MOD_ASSIGN:
+                    var = process_mod(original_var, var);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return var;
     }
 private:
     std::string name_;

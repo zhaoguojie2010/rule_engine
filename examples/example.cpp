@@ -47,7 +47,9 @@ int main() {
                 Assassin.target.age > 18 && Assassin.has_bullet == true
             then
                 Assassin.kill();
-                Police.homicide_case += 1;
+                Police.homicide_case += 11;
+                Police.homicide_case -= 3;
+                Police.homicide_case /= 3;
                 Assassin.has_bullet = false;
         }
     )";
@@ -58,6 +60,7 @@ int main() {
     killer.has_bullet = true;
 
     Police police;
+    police.homicide_case = 22;
     rule_engine::Engine e;
     e.load_rules(rule);
     rule_engine::DataContext dctx;
@@ -65,6 +68,6 @@ int main() {
     dctx.add("Police", police);
     e.execute(&dctx);
     assert(!killer.has_bullet);  
-    assert(police.homicide_case == 1);
+    assert(police.homicide_case == 10);
     return 0;
 }

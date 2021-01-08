@@ -125,5 +125,15 @@ public:
     virtual void accept_bool_literal(std::shared_ptr<Node>) = 0;
 };
 
+
+enum ASSIGN_TYPE {
+    ASSIGN,
+    PLUS_ASSIGN,
+    MINUS_ASSIGN,
+    MUL_ASSIGN,
+    DIV_ASSIGN,
+    MOD_ASSIGN
+};
+
 }
 #endif

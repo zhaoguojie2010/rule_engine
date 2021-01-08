@@ -116,6 +116,12 @@ public:
     void enterAssignment(cruleParser::AssignmentContext * ctx) override { 
         auto assignment = std::make_shared<Assignment>();
         assignment->set_crl_text(ctx->getText());
+        if(ctx->ASSIGN()) assignment->set_type(ASSIGN);
+        else if(ctx->PLUS_ASIGN()) assignment->set_type(PLUS_ASSIGN);
+        else if(ctx->MINUS_ASIGN()) assignment->set_type(MINUS_ASSIGN);
+        else if(ctx->MUL_ASIGN()) assignment->set_type(MUL_ASSIGN);
+        else if(ctx->DIV_ASIGN()) assignment->set_type(DIV_ASSIGN);
+        else if(ctx->MOD_ASIGN()) assignment->set_type(MOD_ASSIGN);
         st_.push(assignment);
     }
     void exitAssignment(cruleParser::AssignmentContext * ctx) override { 
