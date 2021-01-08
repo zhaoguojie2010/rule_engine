@@ -55,8 +55,8 @@ rule_engine is a c++ rule engine library
 3. in your main() function:
 
    ```c++
-   		// define your rule
-   		const char* rule = R"(
+   	 // define your rule
+   	 const char* rule = R"(
            rule kill "this is a description" {
                if 
                    Assassin.target.age > 18 && Assassin.has_bullet == true
