@@ -6,13 +6,16 @@
 struct Target {
     int age;
     std::string name;
+    bool alive;
 };
 
 struct Killer {
-    bool has_bullet;
+    int bullet;
     Target target;
     void kill() {
         std::cout << "killing target: " << target.name << std::endl;
+        bullet -= 1;
+        target.alive =false;
     }
 };
 
@@ -24,7 +27,7 @@ struct Police {
 
 RTTR_REGISTRATION {
     rttr::registration::class_<Killer>("Killer")
-        .property("has_bullet", &Killer::has_bullet)
+        .property("bullet", &Killer::bullet)
         .property("target", &Killer::target)
         .method("kill", &Killer::kill)
     ;
@@ -32,6 +35,7 @@ RTTR_REGISTRATION {
     rttr::registration::class_<Target>("Target")
         .property("age", &Target::age)
         .property("name", &Target::name)
+        .property("alive", &Target::alive)
     ;
 
     rttr::registration::class_<Police>("Police")
@@ -44,20 +48,20 @@ int main() {
     const char* rule = R"(
         rule kill "this is a description" {
             if 
-                Assassin.target.age > 18 && Assassin.has_bullet == true
+                Assassin.target.age > 18 && Assassin.bullet > 0
             then
                 Assassin.kill();
                 Police.homicide_case += 11;
                 Police.homicide_case -= 3;
                 Police.homicide_case /= 3;
-                Assassin.has_bullet = false;
         }
     )";
 
     Killer killer;
     killer.target.age = 19;
     killer.target.name = "chuck norris";
-    killer.has_bullet = true;
+    killer.target.alive = true;
+    killer.bullet = 1;
 
     Police police;
     police.homicide_case = 22;
@@ -67,7 +71,8 @@ int main() {
     dctx.add("Assassin", killer);
     dctx.add("Police", police);
     e.execute(&dctx);
-    assert(!killer.has_bullet);  
+    assert(killer.bullet == 0);  
+    // std::cout << "bullet " << killer.bullet << " homicide case " << police.homicide_case << std::endl;
     assert(police.homicide_case == 10);
     return 0;
 }
