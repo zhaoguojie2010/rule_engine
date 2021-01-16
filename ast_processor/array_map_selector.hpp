@@ -2,18 +2,20 @@
 #define _RULE_ENGINE_SELECTOR_
 
 #include "node.hpp"
-//#include "expression.hpp"
 
 namespace rule_engine {
-class Expression;
 class ArrayMapSelector: public Node, public IExpressionAcceptor {
 public:
     ArrayMapSelector() {}
     void accept_expression(std::shared_ptr<Expression> expr) {
-        expression_ = expr;
+        expression_ = std::dynamic_pointer_cast<IEvaluable>(expr);
+    }
+
+    rttr::variant evaluate(IDataContext* dctx) {
+        return expression_->evaluate(dctx);
     }
 private:
-    std::shared_ptr<Expression> expression_;
+    std::shared_ptr<IEvaluable> expression_;
 };
 
 }

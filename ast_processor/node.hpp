@@ -50,6 +50,7 @@ class ThenExpression;
 class Assignment;
 class Function;
 class Arguments;
+class ArrayMapSelector;
 
 struct IExecutable {
     virtual void execute(IDataContext*) = 0;
@@ -83,6 +84,10 @@ struct IArgumentsAcceptor {
 
 struct IAssignmentAcceptor {
     virtual void accept_assignment(std::shared_ptr<Assignment>) = 0;
+};
+
+struct IArrayMapSelector {
+    virtual void accept_selector(std::shared_ptr<ArrayMapSelector>) = 0;
 };
 
 struct IMemberVariableAcceptor {

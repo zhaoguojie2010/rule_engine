@@ -13,7 +13,7 @@ namespace rule_engine {
 
 class ExpressionAtom: public Node, public IExpressionAtomAcceptor, 
     public IVariableAcceptor, public IConstantAcceptor,
-    public IFunctionAcceptor {
+    public IFunctionAcceptor, public IArrayMapSelector {
 public:
     ExpressionAtom():negation_(false), evaluated_(false) {}
 
@@ -102,6 +102,10 @@ public:
     }
     virtual void accept_function(std::shared_ptr<Function> func) {
         function_ = func;
+    }
+
+    virtual void accept_selector(std::shared_ptr<ArrayMapSelector> selector) {
+        selector_ = selector;
     }
 
     // assignable indicates if a expression atom can be the left oprand of an assignment, 

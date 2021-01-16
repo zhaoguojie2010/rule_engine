@@ -239,8 +239,19 @@ public:
         std::dynamic_pointer_cast<IVariableAcceptor>(acceptor)->accept_variable(var);
     }
 
-    void enterArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { }
-    void exitArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { }
+    void enterArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { 
+        auto selector = std::make_shared<ArrayMapSelector>();
+        selector->set_crl_text(ctx->getText());
+        st_.push(selector);
+    }
+    void exitArrayMapSelector(cruleParser::ArrayMapSelectorContext * ctx) override { 
+        auto selector = std::dynamic_pointer_cast<ArrayMapSelector>(st_.top());
+        st_.pop();
+
+        auto acceptor = st_.top();
+        assert_type_semantic<IArrayMapSelector>(acceptor, "bad cast to IArrayMapSelector");
+        std::dynamic_pointer_cast<IArrayMapSelector>(acceptor)->accept_selector(selector);
+    }
 
     void enterMemberVariable(cruleParser::MemberVariableContext * ctx) override { }
     void exitMemberVariable(cruleParser::MemberVariableContext * ctx) override { 

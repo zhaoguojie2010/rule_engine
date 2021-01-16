@@ -21,7 +21,8 @@ namespace rule_engine {
  *       |
  *    this is a terminal node, the obj "my_struct" is registered in data_context
  */
-class Variable: public Node, public IVariableAcceptor, public IMemberVariableAcceptor {
+class Variable: public Node, public IVariableAcceptor, 
+    public IMemberVariableAcceptor, public IArrayMapSelector {
 public:
     Variable():is_top_level_(false) {}
 
@@ -47,7 +48,42 @@ public:
     rttr::variant evaluate(IDataContext* dctx) {
         // info("evaluate " + get_crl_text() + " " + name_);
         rttr::variant var;
-        if(!has_parent()) {
+
+        if(selector_) {
+            // in this case, parent_ is not really the parent of the selector
+            // e.g. for obj.m["a"], parent_ is obj.m
+            if(!parent_) {
+                syntax_error("invalid selector " + get_crl_text() + ", preceeding selector name is required");
+            }
+            auto selector = parent_->evaluate(dctx);
+            auto key = selector_->evaluate(dctx);
+            if(selector.is_sequential_container()) {
+                // vector
+                auto view = selector.create_sequential_view();
+                auto key_type = key.get_type();
+                if(!key_type.is_arithmetic() || key_type == rttr::type::get<float>() ||
+                    key_type == rttr::type::get<double>()) {
+                    runtime_error("invalid index of array, must be integer type. " + get_crl_text());
+                }
+                std::size_t vec_size = view.get_size();
+                int index = key.to_uint32();
+                if(index >= vec_size) {
+                    runtime_error("index out of range. " + get_crl_text());
+                }
+                var = view.get_value(index).extract_wrapped_value();
+            } else if(selector.is_associative_container()) {
+                // map, unordered_map
+                auto view = selector.create_associative_view();
+                if(view.is_key_only_type()) {
+                    // set, unordered_set
+                } else {
+                    auto it = view.find(key);
+                    if(it != view.end()) {
+                        var = (*it).second.extract_wrapped_value();
+                    }
+                }
+            }
+        } else if(!has_parent()) {
             // TODO: simple name variable
         } else {
             if(parent_->has_parent()) {
@@ -111,11 +147,20 @@ public:
         }
         return var;
     }
+
+    rttr::type type() {
+        return *type_;
+    }
+
+    virtual void accept_selector(std::shared_ptr<ArrayMapSelector> selector) {
+        selector_ = selector;
+    }
 private:
     std::string name_;
     std::shared_ptr<Variable> parent_;
     std::shared_ptr<ArrayMapSelector> selector_;
     bool is_top_level_;
+    std::shared_ptr<rttr::type> type_;
 };
 
 }

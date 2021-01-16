@@ -9,6 +9,7 @@ CXX=g++
 
 # Modules
 MODULE=example
+SELECTOR=map_vector
 
 #######################GCC MACROS####################
 # STREAM_SYNC = stream sync
@@ -76,7 +77,7 @@ endif
 
 #########################STAT########################
 
-all: PRE_BUILD $(BUILDPATHROOT)/$(MODULE)
+all: PRE_BUILD $(BUILDPATHROOT)/$(MODULE) $(BUILDPATHROOT)/$(SELECTOR)
 	@echo "[[1;32;40mBUILD[0m][Target:'[1;32;40mall[0m']"
 	@echo "make all done"
 
@@ -86,7 +87,7 @@ clean:
 	@rm -rf $(BUILDPATHROOT)
 .phony:clean
 
-OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -v "examples/example.cpp"))
+OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -v "examples/example.cpp" | egrep -v "examples/map_vector.cpp"))
 
 %.o:%.cpp
 	@echo "[[1;32;40mBUILD[0m][Target:'[1;32;40m$<[0m']"
@@ -104,6 +105,10 @@ OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -
 $(BUILDPATHROOT)/$(MODULE) : $(OBJS) 
 	$(CXX) -v -o $@ $(INC_DIR) $(LDFLAGS) $(CXXFLAGS) \
 		$(EXAMPLE_DIR)/example.cpp $(OBJS) $(LIB_INC)
+
+$(BUILDPATHROOT)/$(SELECTOR) : $(OBJS) 
+	$(CXX) -v -o $@ $(INC_DIR) $(LDFLAGS) $(CXXFLAGS) \
+		$(EXAMPLE_DIR)/map_vector.cpp $(OBJS) $(LIB_INC)
 
 PRE_BUILD:
 	@mkdir -p $(BUILDPATHROOT)

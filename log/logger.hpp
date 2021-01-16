@@ -24,6 +24,10 @@ void semantic_error(const std::string& s) {
     std::cout << s << std::endl;
 }
 
+void syntax_error(const std::string& s) {
+    std::cout << s << std::endl;
+}
+
 void runtime_error(const std::string& s) {
     std::cout << s << std::endl;
 }
