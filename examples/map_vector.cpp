@@ -41,9 +41,9 @@ int main() {
     rule_engine::DataContext dctx;
     dctx.add("Family", family);
     e.execute(&dctx);
-    std::cout << family.members["step mother"] << std::endl;
-    // assert(family["mother"] == "judith melnick");  
-    // assert(family["step mother"] == "candy");
+
+    assert(family.members["mother"] == "judith melnick");  
+    assert(family.members["step mother"] == "candy");
 
     return 0;
 }

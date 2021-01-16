@@ -104,7 +104,45 @@ public:
     }
 
     void assign(IDataContext* dctx, rttr::variant var, ASSIGN_TYPE t = ASSIGN) {
-        if(!has_parent()) {
+        if(selector_) {
+            // this is a map, set or vector
+            if(!parent_) {
+                syntax_error("invalid selector " + get_crl_text() + ", preceeding selector name is required");
+            }
+            auto selector = parent_->evaluate(dctx);
+            auto key = selector_->evaluate(dctx);
+            if(selector.is_sequential_container()) {
+                // vector
+                auto view = selector.create_sequential_view();
+                auto key_type = key.get_type();
+                if(!key_type.is_arithmetic() || key_type == rttr::type::get<float>() ||
+                    key_type == rttr::type::get<double>()) {
+                    runtime_error("invalid index of array, must be integer type. " + get_crl_text());
+                }
+                std::size_t vec_size = view.get_size();
+                int index = key.to_uint32();
+                if(index >= vec_size) {
+                    runtime_error("index out of range. " + get_crl_text());
+                }
+                var = view.get_value(index).extract_wrapped_value();
+            } else if(selector.is_associative_container()) {
+                // map, unordered_map
+                auto view = selector.create_associative_view();
+                if(view.is_key_only_type()) {
+                    // set, unordered_set
+                } else {
+                    // info("assigning to a map "+var.to_string());
+                    auto it = view.find(key);
+                    if(it != view.end()) {
+                        view.erase(key);
+                        auto original_var = (*it).second.extract_wrapped_value();
+                        var = actual_assigned_value(original_var, var, t);
+                    }
+                    view.insert(key, var);
+                    parent_->assign(dctx, selector);
+                }
+            }
+        } else if(!has_parent()) {
             // TODO: 
         } else {
             // TODO: this is too slow
@@ -125,25 +163,30 @@ public:
     rttr::variant actual_assigned_value(rttr::instance V, rttr::property prop, rttr::variant var, ASSIGN_TYPE t) {
         if(is_top_level_) {
             auto original_var = prop.get_value(V);
-            switch(t) {
-                case PLUS_ASSIGN:
-                    var = process_addition(original_var, var);
-                    break;
-                case MINUS_ASSIGN:
-                    var = process_subtraction(original_var, var);
-                    break;
-                case MUL_ASSIGN:
-                    var = process_multiplication(original_var, var);
-                    break;
-                case DIV_ASSIGN:
-                    var = process_division(original_var, var);
-                    break;
-                case MOD_ASSIGN:
-                    var = process_mod(original_var, var);
-                    break;
-                default:
-                    break;
-            }
+            var = actual_assigned_value(original_var, var, t);
+        }
+        return var;
+    }
+
+    rttr::variant actual_assigned_value(rttr::variant original_var, rttr::variant var, ASSIGN_TYPE t) {
+        switch(t) {
+            case PLUS_ASSIGN:
+                var = process_addition(original_var, var);
+                break;
+            case MINUS_ASSIGN:
+                var = process_subtraction(original_var, var);
+                break;
+            case MUL_ASSIGN:
+                var = process_multiplication(original_var, var);
+                break;
+            case DIV_ASSIGN:
+                var = process_division(original_var, var);
+                break;
+            case MOD_ASSIGN:
+                var = process_mod(original_var, var);
+                break;
+            default:
+                break;
         }
         return var;
     }
