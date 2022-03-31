@@ -3,6 +3,8 @@
 #include <cassert>
 #include "rule_engine.hpp"
 
+#include <chrono>
+
 struct Target {
     int age;
     std::string name;
@@ -75,16 +77,25 @@ int main() {
 
     Police police;
     police.homicide_case = 22;
+
+    auto loadRuleTime = std::chrono::steady_clock::now();
     rule_engine::Engine e;
     e.load_rules(rule);
     rule_engine::DataContext dctx;
     dctx.add("Assassin", killer);
     dctx.add("Police", police);
+
+    auto executeTime = std::chrono::steady_clock::now();
     e.execute(&dctx);
     assert(killer.bullet == 0);  
     // std::cout << "bullet " << killer.bullet << " homicide case " << police.homicide_case << std::endl;
     assert(police.homicide_case == 10);
     assert(!killer.target.alive);
+
+    auto endTime = std::chrono::steady_clock::now();
+    auto loadRuleCost = std::chrono::duration_cast<std::chrono::microseconds>(executeTime - loadRuleTime).count();
+    auto executeCost = std::chrono::duration_cast<std::chrono::microseconds>(endTime - executeTime).count();
+    std::cout << "load cost " << loadRuleCost << " us, execute cost " << executeCost << " us." << std::endl;
 
     TheManagement management;
     management.location = "hotel cortez";
@@ -103,8 +114,14 @@ int main() {
                 TheManagement.killer.kill();
         }
     )";
+    loadRuleTime = std::chrono::steady_clock::now();
     e.load_rules(rule1);
+    executeTime = std::chrono::steady_clock::now();
     e.execute(&dctx1);
+    endTime = std::chrono::steady_clock::now();
+    loadRuleCost = std::chrono::duration_cast<std::chrono::microseconds>(executeTime - loadRuleTime).count();
+    executeCost = std::chrono::duration_cast<std::chrono::microseconds>(endTime - executeTime).count();
+    std::cout << "load cost " << loadRuleCost << " us, execute cost " << executeCost << " us." << std::endl;
     
     assert(management.killer.bullet==4);
     assert(!management.killer.target.alive);

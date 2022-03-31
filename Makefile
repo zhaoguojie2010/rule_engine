@@ -50,10 +50,11 @@ CXXFLAGS=-ggdb \
 		 -Wno-literal-suffix 
 
 INC_DIR=-I. \
-		-I/usr/local/include/antlr4-runtime \
+		-I/opt/homebrew/Cellar/rttr/0.9.6/include \
 		-I/user/local/include \
 		-I$(ROOT) \
 		-I$(ROOT)/antlr/grammar \
+		-I$(ROOT)/antlr/runtime \
 		-I$(ROOT)/antlr/grammar/generated \
 		-I$(ROOT)/ast_processor \
 		-I$(ROOT)/engine \
@@ -65,7 +66,8 @@ INC_DIR=-I. \
 		-I$(DEPS_DIR)/support \
 
 
-LIB_INC= -lantlr4-runtime -lrttr_core
+#LIB_INC= -lantlr4-runtime -lrttr_core
+LIB_INC= -lrttr_core
 
 
 ###################SYSTEM CHECK####################
@@ -88,6 +90,7 @@ clean:
 .phony:clean
 
 OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/grammar -name "*.cpp" | egrep -v "examples/example.cpp" | egrep -v "examples/map_vector.cpp"))
+OBJS += $(patsubst %.cpp,%.o, $(shell find antlr/runtime -name "*.cpp" | egrep -v "examples/example.cpp" | egrep -v "examples/map_vector.cpp"))
 
 %.o:%.cpp
 	@echo "[[1;32;40mBUILD[0m][Target:'[1;32;40m$<[0m']"
